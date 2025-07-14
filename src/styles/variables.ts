@@ -3,5 +3,6 @@ export default {
   primaryColor: '#fff',
   secondaryColor: '#000',
   titleColor: '#050505',
-  textColor: '#65676B'
+  textColor: '#65676B',
+  lineColor: '#C7CAD2'
 }

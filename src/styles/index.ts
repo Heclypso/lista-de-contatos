@@ -7,6 +7,7 @@ export const GlobalStyle = createGlobalStyle`
         margin: 0;
         padding: 0;
         box-sizing: border-box;
+        font-family: "Inter", sans-serif;
     }
 `
 
@@ -43,4 +44,8 @@ export const Label = styled(Text)`
 
 export const LabelBig = styled(Text)`
   font-size: 15px;
+`
+
+export const Option = styled(LabelBig)`
+  color: ${variables.titleColor};
 `

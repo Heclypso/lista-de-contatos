@@ -9,7 +9,6 @@ export const Search = styled.input`
   color: ${variables.titleColor};
   padding: 20px 20px 20px 60px;
   border: none;
-  margin-bottom: 28px;
 
   &::placeholder {
     font-size: 15px;

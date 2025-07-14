@@ -1,0 +1,27 @@
+import {
+  Label,
+  ContactTitle,
+  ContactWrapper,
+  TextContainer,
+  Avatar,
+  CallIcon
+} from './styles'
+
+import icon from '../../icons/call_icon.svg'
+
+const Contact = () => {
+  const placeholderPhoto = 'https://placehold.co/40x40'
+
+  return (
+    <ContactWrapper>
+      <Avatar src={placeholderPhoto} alt="Imagem do avatar do contato" />
+      <TextContainer>
+        <ContactTitle>Nome do contato</ContactTitle>
+        <Label>Celular, 8 de jul. 14:00</Label>
+      </TextContainer>
+      <CallIcon src={icon} alt="Ícone de iniciar chamada" />
+    </ContactWrapper>
+  )
+}
+
+export default Contact
