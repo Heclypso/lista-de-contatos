@@ -9,9 +9,11 @@ const ContactsList = () => {
       <SearchBar />
       <CreateNewContact />
       <WordCategory />
-      <Contact />
-      <Contact />
-      <Contact />
+      <Contact isFirst={true} isLast={false} />
+      <Contact isFirst={false} isLast={false} />
+      <Contact isFirst={false} isLast={true} />
+      <WordCategory />
+      <Contact isFirst={true} isLast={true} />
     </>
   )
 }

@@ -1,5 +1,6 @@
 import styled from 'styled-components'
 import variables from '../../styles/variables'
+import { Link } from 'react-router-dom'
 
 export const Nav = styled.div`
   width: 100%;
@@ -20,6 +21,12 @@ export const OptionWrapper = styled.div`
   justify-content: center;
   align-items: center;
   gap: 4px;
+`
+
+export const LinkOption = styled(Link)`
+  text-decoration: none;
+  font-size: 15px;
+  color: ${variables.titleColor};
 `
 
 export const OptionIcon = styled.img`

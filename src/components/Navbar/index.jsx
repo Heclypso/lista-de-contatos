@@ -1,5 +1,5 @@
 import { Option } from '../../styles'
-import { Nav, OptionIcon, OptionWrapper } from './styles'
+import { Nav, OptionIcon, OptionWrapper, LinkOption } from './styles'
 
 import favoriteIcon from '../../icons/favorite_icon.svg'
 import recentIcon from '../../icons/clock_icon.svg'
@@ -13,17 +13,17 @@ const Navbar = () => {
           src={favoriteIcon}
           alt="Ícone da aba de contatos favoritos"
         />
-        <Option>Favoritos</Option>
+        <LinkOption to="/favorites">Favoritos</LinkOption>
       </OptionWrapper>
 
       <OptionWrapper>
         <OptionIcon src={recentIcon} alt="Ícone da aba de contatos recentes" />
-        <Option>Recentes</Option>
+        <LinkOption to="/">Recentes</LinkOption>
       </OptionWrapper>
 
       <OptionWrapper>
         <OptionIcon src={contactsIcon} alt="Ícone da aba de contatos" />
-        <Option>Contatos</Option>
+        <LinkOption to="/contacts">Contatos</LinkOption>
       </OptionWrapper>
     </Nav>
   )

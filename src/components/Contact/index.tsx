@@ -9,11 +9,16 @@ import {
 
 import icon from '../../icons/call_icon.svg'
 
-const Contact = () => {
+type ContactType = {
+  isFirst: boolean
+  isLast: boolean
+}
+
+const Contact = ({ isFirst, isLast }: ContactType) => {
   const placeholderPhoto = 'https://placehold.co/40x40'
 
   return (
-    <ContactWrapper>
+    <ContactWrapper isFirst={isFirst} isLast={isLast}>
       <Avatar src={placeholderPhoto} alt="Imagem do avatar do contato" />
       <TextContainer>
         <ContactTitle>Nome do contato</ContactTitle>
