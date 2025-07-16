@@ -5,7 +5,7 @@ const Contacts = () => {
   return (
     <>
       <ContactsList />
-      <Navbar />
+      <Navbar onDetails={false} />
     </>
   )
 }

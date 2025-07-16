@@ -8,6 +8,7 @@ import {
 } from './styles'
 
 import icon from '../../icons/call_icon.svg'
+import { useNavigate } from 'react-router-dom'
 
 type ContactType = {
   isFirst: boolean
@@ -16,9 +17,14 @@ type ContactType = {
 
 const Contact = ({ isFirst, isLast }: ContactType) => {
   const placeholderPhoto = 'https://placehold.co/40x40'
+  const navigate = useNavigate()
 
   return (
-    <ContactWrapper isFirst={isFirst} isLast={isLast}>
+    <ContactWrapper
+      onClick={() => navigate('/contact-details')}
+      isFirst={isFirst}
+      isLast={isLast}
+    >
       <Avatar src={placeholderPhoto} alt="Imagem do avatar do contato" />
       <TextContainer>
         <ContactTitle>Nome do contato</ContactTitle>

@@ -4,7 +4,7 @@ const Favorites = () => {
   return (
     <>
       <h2>Olá, favoritos</h2>
-      <Navbar />
+      <Navbar onDetails={false} />
     </>
   )
 }
