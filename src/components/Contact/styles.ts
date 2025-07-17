@@ -3,8 +3,8 @@ import { Text, Title } from '../../styles'
 import variables from '../../styles/variables'
 
 type WrapperProps = {
-  isFirst: boolean
-  isLast: boolean
+  isFirst?: boolean
+  isLast?: boolean
 }
 
 export const ContactWrapper = styled.div<WrapperProps>`
@@ -32,15 +32,13 @@ export const ContactWrapper = styled.div<WrapperProps>`
         : isLast
           ? ''
           : `1px solid ${variables.lineColor}`};
-  margin-bottom: ${({ isLast }) => (isLast ? '16px' : '')};
+  margin: ${({ isLast }) => (isLast ? '0px 0px 16px 0px' : '')};
 `
 
 export const TextContainer = styled.div`
   height: 34px;
   margin-left: 8px;
 `
-
-export const ContactTitle = styled(Title)``
 
 export const Label = styled(Text)``
 

@@ -14,11 +14,12 @@ export const Nav = styled.div<NavProps>`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  position: absolute;
-  top: ${({ onDetails }) => (onDetails ? '1' : '')};
+  position: ${({ onDetails }) => (onDetails ? '' : 'absolute')};
+  top: ${({ onDetails }) => (onDetails ? '0' : '')};
   bottom: ${({ onDetails }) => (onDetails ? '' : 0)};
   left: 0;
   padding: 8px 24px;
+  margin: ${({ onDetails }) => (onDetails ? '4px 0px 16px 0px' : '')};
 `
 
 export const IconsContainer = styled.div`

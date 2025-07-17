@@ -2,6 +2,10 @@ import { createGlobalStyle } from 'styled-components'
 import styled from 'styled-components'
 import variables from './variables'
 
+type Props = {
+  onDetails?: boolean
+}
+
 export const GlobalStyle = createGlobalStyle`
     * {
         margin: 0;
@@ -11,16 +15,18 @@ export const GlobalStyle = createGlobalStyle`
     }
 `
 
-export const Container = styled.div`
+export const Container = styled.div<Props>`
   width: 100vw;
-  height: 100vh;
-  padding: 40px 16px 0px 16px;
+  height: ${({ onDetails }) => (onDetails ? '100%' : '100vh')};
+  padding: ${({ onDetails }) =>
+    onDetails ? '40px 0px 0px 0px' : '40px 16px 0px 16px'};
   background-color: ${variables.backgroundColor};
 `
 
 export const Title = styled.h2`
   font-size: 15px;
   color: ${variables.titleColor};
+  font-weight: 400;
 `
 
 export const Text = styled.p`
@@ -40,6 +46,10 @@ export const TextBig = styled(Text)`
 
 export const Label = styled(Text)`
   font-size: 14px;
+`
+
+export const LabelBlack = styled(Label)`
+  color: ${variables.secondaryColor};
 `
 
 export const LabelBig = styled(Text)`

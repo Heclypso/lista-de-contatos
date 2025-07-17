@@ -30,7 +30,7 @@ function App() {
   // const dispatcher = useDispatch()
 
   return (
-    <Container>
+    <Container onDetails={true}>
       <GlobalStyle />
       <RouterProvider router={routes} />
     </Container>

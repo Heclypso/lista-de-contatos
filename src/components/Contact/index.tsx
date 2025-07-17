@@ -1,6 +1,5 @@
 import {
   Label,
-  ContactTitle,
   ContactWrapper,
   TextContainer,
   Avatar,
@@ -9,10 +8,11 @@ import {
 
 import icon from '../../icons/call_icon.svg'
 import { useNavigate } from 'react-router-dom'
+import { Title } from '../../styles'
 
 type ContactType = {
-  isFirst: boolean
-  isLast: boolean
+  isFirst?: boolean
+  isLast?: boolean
 }
 
 const Contact = ({ isFirst, isLast }: ContactType) => {
@@ -27,7 +27,7 @@ const Contact = ({ isFirst, isLast }: ContactType) => {
     >
       <Avatar src={placeholderPhoto} alt="Imagem do avatar do contato" />
       <TextContainer>
-        <ContactTitle>Nome do contato</ContactTitle>
+        <Title>Nome do contato</Title>
         <Label>Celular, 8 de jul. 14:00</Label>
       </TextContainer>
       <CallIcon src={icon} alt="Ícone de iniciar chamada" />

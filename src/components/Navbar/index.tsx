@@ -15,17 +15,21 @@ import contactsIcon from '../../icons/user_icon.svg'
 import returnIcon from '../../icons/arrow_back.svg'
 import editIcon from '../../icons/edit_icon.svg'
 import deleteIcon from '../../icons/trash_cam.svg'
+import { useNavigate } from 'react-router-dom'
 
 type Props = {
   onDetails: boolean
 }
 
 const Navbar = ({ onDetails }: Props) => {
+  const navigate = useNavigate()
+
   return (
     <Nav onDetails={onDetails}>
       {onDetails ? (
         <>
           <OptionIcon
+            onClick={() => navigate('/')}
             src={returnIcon}
             alt="Ícone de navegar para a página anterior"
           />
