@@ -3,7 +3,6 @@ import variables from '../../styles/variables'
 
 type Props = {
   textAlign?: boolean
-  heightValue?: string
 }
 
 export const DetailsWrapper = styled.div`
@@ -13,6 +12,10 @@ export const DetailsWrapper = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
+
+  div:nth-child(5) {
+    height: 86px;
+  }
 `
 
 export const Avatar = styled.img`
@@ -60,8 +63,7 @@ export const OptionText = styled.h2<Props>`
 
 export const DataContainer = styled.div<Props>`
   width: calc(100% - 32px);
-  height: ${({ heightValue }) =>
-    heightValue != null && heightValue.trim() != '' ? heightValue : '153px'};
+  height: 153px;
   background-color: ${variables.primaryColor};
   border-radius: 10px;
   margin-bottom: 16px;

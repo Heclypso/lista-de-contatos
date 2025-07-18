@@ -59,7 +59,7 @@ const Details = () => {
           </DataTextWrapper>
         </DataItemWrapper>
       </DataContainer>
-      <DataContainer heightValue={'86px'}>
+      <DataContainer>
         <Title>Apps conectados</Title>
         <DataItemWrapper>
           <OptionIcon src={addIcon} />
