@@ -1,12 +1,4 @@
-import {
-  Nav,
-  OptionIcon,
-  OptionWrapper,
-  LinkOption,
-  IconsContainer,
-  EditIcon,
-  DeleteIcon
-} from './styles'
+import * as S from './styles'
 
 import favoriteIcon from '../../icons/favorite_icon.svg'
 import recentIcon from '../../icons/clock_icon.svg'
@@ -25,45 +17,50 @@ const Navbar = ({ onDetails }: Props) => {
   const navigate = useNavigate()
 
   return (
-    <Nav onDetails={onDetails}>
+    <S.Nav onDetails={onDetails}>
       {onDetails ? (
         <>
-          <OptionIcon
+          <S.OptionIcon
             onClick={() => navigate('/')}
             src={returnIcon}
             alt="Ícone de navegar para a página anterior"
           />
-          <IconsContainer>
-            <EditIcon src={editIcon} alt="Ícone de editar contato" />
-            <OptionIcon src={favoriteIcon} alt="Ícone de favoritar contato" />
-            <DeleteIcon src={deleteIcon} alt="Ícone de deletar contato" />
-          </IconsContainer>
+          <S.IconsContainer>
+            <S.EditIcon src={editIcon} alt="Ícone de editar contato" />
+            <S.OptionIcon src={favoriteIcon} alt="Ícone de favoritar contato" />
+            <S.DeleteIcon src={deleteIcon} alt="Ícone de deletar contato" />
+          </S.IconsContainer>
         </>
       ) : (
         <>
-          <OptionWrapper>
-            <OptionIcon
+          <S.OptionWrapper>
+            <S.OptionIcon
               src={favoriteIcon}
               alt="Ícone da aba de contatos favoritos"
             />
-            <LinkOption to="/favorites">Favoritos</LinkOption>
-          </OptionWrapper>
+            <S.LinkOption to="/favorites">Favoritos</S.LinkOption>
+          </S.OptionWrapper>
 
-          <OptionWrapper>
-            <OptionIcon
+          <S.OptionWrapper>
+            <S.OptionIcon
               src={recentIcon}
               alt="Ícone da aba de contatos recentes"
             />
-            <LinkOption to="/">Recentes</LinkOption>
-          </OptionWrapper>
+            <S.LinkOption to="/">Recentes</S.LinkOption>
+          </S.OptionWrapper>
 
-          <OptionWrapper>
-            <OptionIcon src={contactsIcon} alt="Ícone da aba de contatos" />
-            <LinkOption to="/contacts">Contatos</LinkOption>
-          </OptionWrapper>
+          <S.OptionWrapper>
+            <S.OptionIcon src={contactsIcon} alt="Ícone da aba de contatos" />
+            <S.LinkOption
+              onClick={() => localStorage.setItem('onDetailsValue', 'true')}
+              to="/contacts"
+            >
+              Contatos
+            </S.LinkOption>
+          </S.OptionWrapper>
         </>
       )}
-    </Nav>
+    </S.Nav>
   )
 }
 

@@ -1,11 +1,12 @@
 // import { useDispatch } from 'react-redux'
-import { Container, GlobalStyle } from './styles'
+import { GlobalStyle } from './styles'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 // import { addToContacts } from './store/reducers/contacts'
 import Contacts from './pages/Contacts'
 import Favorites from './pages/Favorites'
 import Recents from './pages/Recents'
 import ContactDetails from './pages/ContactsDetails'
+import {} from './components/Navbar'
 
 const routes = createBrowserRouter([
   {
@@ -28,12 +29,11 @@ const routes = createBrowserRouter([
 
 function App() {
   // const dispatcher = useDispatch()
-
   return (
-    <Container onDetails={true}>
+    <>
       <GlobalStyle />
       <RouterProvider router={routes} />
-    </Container>
+    </>
   )
 }
 

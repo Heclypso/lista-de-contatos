@@ -2,10 +2,6 @@ import { createGlobalStyle } from 'styled-components'
 import styled from 'styled-components'
 import variables from './variables'
 
-type Props = {
-  onDetails?: boolean
-}
-
 export const GlobalStyle = createGlobalStyle`
     * {
         margin: 0;
@@ -15,11 +11,17 @@ export const GlobalStyle = createGlobalStyle`
     }
 `
 
-export const Container = styled.div<Props>`
+export const Container = styled.div`
   width: 100vw;
-  height: ${({ onDetails }) => (onDetails ? '100%' : '100vh')};
-  padding: ${({ onDetails }) =>
-    onDetails ? '40px 0px 0px 0px' : '40px 16px 0px 16px'};
+  height: 100vh;
+  padding: 40px 16px 0px 16px;
+  background-color: ${variables.backgroundColor};
+`
+
+export const ContainerDetails = styled.div`
+  width: 100vw;
+  height: 100%;
+  padding: 40px 0px 0px 0px;
   background-color: ${variables.backgroundColor};
 `
 
