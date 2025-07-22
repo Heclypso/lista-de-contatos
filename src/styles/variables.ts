@@ -4,5 +4,6 @@ export default {
   secondaryColor: '#000',
   titleColor: '#050505',
   textColor: '#65676B',
-  lineColor: '#C7CAD2'
+  lineColor: '#C7CAD2',
+  buttonHoverColor: '#F9F9F9'
 }

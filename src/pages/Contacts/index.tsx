@@ -5,7 +5,7 @@ import { Container } from '../../styles'
 const Contacts = () => {
   return (
     <Container>
-      <ContactsList />
+      <ContactsList onContactsPage={true} />
       <Navbar onDetails={false} />
     </Container>
   )

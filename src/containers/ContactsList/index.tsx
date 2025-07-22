@@ -3,17 +3,26 @@ import CreateNewContact from '../../components/CreateNewContact'
 import SearchBar from '../../components/SearchBar'
 import WordCategory from '../../components/WordCategory'
 
-const ContactsList = () => {
+type Props = {
+  onContactsPage: boolean
+}
+
+const ContactsList = ({ onContactsPage }: Props) => {
   return (
     <>
       <SearchBar />
       <CreateNewContact />
-      <WordCategory />
-      <Contact isFirst={true} isLast={false} />
-      <Contact isFirst={false} isLast={false} />
-      <Contact isFirst={false} isLast={true} />
-      <WordCategory />
-      <Contact isFirst={true} isLast={true} />
+      <WordCategory wordCategory="A" />
+      <Contact onContactsPage={onContactsPage} isFirst={true} isLast={false} />
+      <Contact onContactsPage={onContactsPage} isFirst={false} isLast={false} />
+      <Contact onContactsPage={onContactsPage} isFirst={false} isLast={true} />
+      <WordCategory wordCategory="B" />
+      <Contact
+        onContactsPage={onContactsPage}
+        isFirst={true}
+        isLast={true}
+        uniqueOfWord={true}
+      />
     </>
   )
 }

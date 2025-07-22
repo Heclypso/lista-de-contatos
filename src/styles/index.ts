@@ -16,6 +16,7 @@ export const Container = styled.div`
   height: 100vh;
   padding: 40px 16px 0px 16px;
   background-color: ${variables.backgroundColor};
+  overflow-y: scroll;
 `
 
 export const ContainerDetails = styled.div`

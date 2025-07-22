@@ -51,12 +51,7 @@ const Navbar = ({ onDetails }: Props) => {
 
           <S.OptionWrapper>
             <S.OptionIcon src={contactsIcon} alt="Ícone da aba de contatos" />
-            <S.LinkOption
-              onClick={() => localStorage.setItem('onDetailsValue', 'true')}
-              to="/contacts"
-            >
-              Contatos
-            </S.LinkOption>
+            <S.LinkOption to="/contacts">Contatos</S.LinkOption>
           </S.OptionWrapper>
         </>
       )}

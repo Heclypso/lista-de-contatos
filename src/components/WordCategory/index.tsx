@@ -4,10 +4,14 @@ import {
   WordCategoryWrapper
 } from './styles'
 
-const WordCategory = () => {
+type Props = {
+  wordCategory: string
+}
+
+const WordCategory = ({ wordCategory }: Props) => {
   return (
     <WordCategoryWrapper>
-      <WordCategoryWord>F</WordCategoryWord>
+      <WordCategoryWord>{wordCategory}</WordCategoryWord>
       <WordCategoryLine />
     </WordCategoryWrapper>
   )
