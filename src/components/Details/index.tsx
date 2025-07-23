@@ -1,7 +1,5 @@
 import * as S from './styles'
 
-const avatarPlaceholder = 'https://placehold.co/120x120'
-
 import phoneIcon from '../../icons/phone_icon.svg'
 import messageIcon from '../../icons/message_icon.svg'
 import videoIcon from '../../icons/video_icon.svg'
@@ -10,11 +8,16 @@ import addIcon from '../../icons/plus_icon.svg'
 
 import { Label, LabelBlack, Title } from '../../styles'
 
+const contactAvatar = localStorage.getItem('contact-avatar')?.toString()
+const contactName = localStorage.getItem('contact-name')
+const contactNumber = localStorage.getItem('contact-number')
+const contactEmail = localStorage.getItem('contact-email')
+
 const Details = () => {
   return (
     <S.DetailsWrapper>
-      <S.Avatar src={avatarPlaceholder} />
-      <S.Name>Placeholder</S.Name>
+      <S.Avatar src={contactAvatar} />
+      <S.Name>{contactName}</S.Name>
       <S.OptionsContainer>
         <S.OptionWrapper>
           <S.OptionIcon src={phoneIcon} />
@@ -36,14 +39,14 @@ const Details = () => {
         <S.DataItemWrapper>
           <S.OptionIcon src={phoneIcon} />
           <S.DataTextWrapper>
-            <LabelBlack>12 345678910</LabelBlack>
+            <LabelBlack>{contactNumber}</LabelBlack>
             <Label>Telefone</Label>
           </S.DataTextWrapper>
         </S.DataItemWrapper>
         <S.DataItemWrapper>
           <S.OptionIcon src={mailIcon} />
           <S.DataTextWrapper>
-            <LabelBlack>Placeholder@gmail.com</LabelBlack>
+            <LabelBlack>{contactEmail}</LabelBlack>
             <Label>Email</Label>
           </S.DataTextWrapper>
         </S.DataItemWrapper>

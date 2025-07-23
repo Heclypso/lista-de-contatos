@@ -23,15 +23,34 @@ const Contact = ({
   const navigate = useNavigate()
   const placeholderPhoto = 'https://placehold.co/40x40'
 
+  function getDetails(evento: any) {
+    localStorage.setItem(
+      'contact-avatar',
+      evento.currentTarget.children[0].children[0].attributes[2].textContent
+    )
+    localStorage.setItem(
+      'contact-name',
+      evento.currentTarget.children[0].children[1].children[0].textContent
+    )
+    localStorage.setItem(
+      'contact-number',
+      evento.currentTarget.children[1].children[0].children[1].textContent
+    )
+    localStorage.setItem(
+      'contact-email',
+      evento.currentTarget.children[1].children[1].children[1].textContent
+    )
+  }
+
   return (
     <S.ContactContainer
       uniqueOfWord={uniqueOfWord}
       isFirst={isFirst}
       isLast={isLast}
-      onClick={() => {
+      onClick={(evento) => {
         setBorderVisibleState(false)
         setInfoExpandedState(true)
-        console.log(borderVisibleState)
+        infoExpandedState && !borderVisibleState && getDetails(evento)
       }}
     >
       <S.ContactWrapper
