@@ -10,13 +10,19 @@ type ContactType = {
   isLast?: boolean
   uniqueOfWord?: boolean
   onContactsPage: boolean
+  contactName: string
+  phoneNumber: string
+  emailAdress: string
 }
 
 const Contact = ({
   isFirst,
   isLast,
   uniqueOfWord,
-  onContactsPage
+  onContactsPage,
+  contactName,
+  phoneNumber,
+  emailAdress
 }: ContactType) => {
   const [borderVisibleState, setBorderVisibleState] = useState(true)
   const [infoExpandedState, setInfoExpandedState] = useState(false)
@@ -61,7 +67,7 @@ const Contact = ({
       >
         <S.Avatar src={placeholderPhoto} alt="Imagem do avatar do contato" />
         <S.TextContainer>
-          <Title>Nome do contato</Title>
+          <Title>{contactName}</Title>
           {!onContactsPage && <S.Label>Celular, 8 de jul. 14:00</S.Label>}
         </S.TextContainer>
         {!onContactsPage && (
@@ -72,11 +78,11 @@ const Contact = ({
         <S.ContactExpanded>
           <S.ContactInfosWrapper>
             <LabelBig>Telefone</LabelBig>
-            <S.ContactInfos>12 345678910</S.ContactInfos>
+            <S.ContactInfos>{phoneNumber}</S.ContactInfos>
           </S.ContactInfosWrapper>
           <S.ContactInfosWrapper>
             <LabelBig>Email</LabelBig>
-            <S.ContactInfos>exemplo@gmail.com</S.ContactInfos>
+            <S.ContactInfos>{emailAdress}</S.ContactInfos>
           </S.ContactInfosWrapper>
           <S.ContactButtonsWrapper>
             <S.ContactButton onClick={() => navigate('/contact-details')}>

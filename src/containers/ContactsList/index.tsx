@@ -13,11 +13,35 @@ const ContactsList = ({ onContactsPage }: Props) => {
       <SearchBar />
       <CreateNewContact />
       <WordCategory wordCategory="A" />
-      <Contact onContactsPage={onContactsPage} isFirst={true} isLast={false} />
-      <Contact onContactsPage={onContactsPage} isFirst={false} isLast={false} />
-      <Contact onContactsPage={onContactsPage} isFirst={false} isLast={true} />
+      <Contact
+        contactName="ola"
+        phoneNumber={'12 345678910'}
+        emailAdress="exemplo@gmail.com"
+        onContactsPage={onContactsPage}
+        isFirst={true}
+        isLast={false}
+      />
+      <Contact
+        contactName="ola"
+        phoneNumber={'12 345678910'}
+        emailAdress="exemplo@gmail.com"
+        onContactsPage={onContactsPage}
+        isFirst={false}
+        isLast={false}
+      />
+      <Contact
+        contactName="ola"
+        phoneNumber={'12 345678910'}
+        emailAdress="exemplo@gmail.com"
+        onContactsPage={onContactsPage}
+        isFirst={false}
+        isLast={true}
+      />
       <WordCategory wordCategory="B" />
       <Contact
+        contactName="ola"
+        phoneNumber={'12 345678910'}
+        emailAdress="exemplo@gmail.com"
         onContactsPage={onContactsPage}
         isFirst={true}
         isLast={true}
