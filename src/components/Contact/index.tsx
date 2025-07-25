@@ -10,6 +10,7 @@ type ContactType = {
   isLast?: boolean
   uniqueOfWord?: boolean
   onContactsPage: boolean
+  contactAvatar: string
   contactName: string
   phoneNumber: string
   emailAdress: string
@@ -22,12 +23,12 @@ const Contact = ({
   onContactsPage,
   contactName,
   phoneNumber,
-  emailAdress
+  emailAdress,
+  contactAvatar
 }: ContactType) => {
   const [borderVisibleState, setBorderVisibleState] = useState(true)
   const [infoExpandedState, setInfoExpandedState] = useState(false)
   const navigate = useNavigate()
-  const placeholderPhoto = 'https://placehold.co/40x40'
 
   function getDetails(evento: any) {
     localStorage.setItem(
@@ -65,7 +66,7 @@ const Contact = ({
         isFirst={isFirst}
         isLast={isLast}
       >
-        <S.Avatar src={placeholderPhoto} alt="Imagem do avatar do contato" />
+        <S.Avatar src={contactAvatar} alt="Imagem do avatar do contato" />
         <S.TextContainer>
           <Title>{contactName}</Title>
           {!onContactsPage && <S.Label>Celular, 8 de jul. 14:00</S.Label>}
