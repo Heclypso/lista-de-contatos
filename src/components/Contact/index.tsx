@@ -30,22 +30,23 @@ const Contact = ({
   const [infoExpandedState, setInfoExpandedState] = useState(false)
   const navigate = useNavigate()
 
-  function getDetails(evento: any) {
+  function getDetails(evento: React.MouseEvent<HTMLElement>) {
     localStorage.setItem(
       'contact-avatar',
-      evento.currentTarget.children[0].children[0].attributes[2].textContent
+      evento.currentTarget.children[0].children[0].attributes[2].textContent ||
+        ''
     )
     localStorage.setItem(
       'contact-name',
-      evento.currentTarget.children[0].children[1].children[0].textContent
+      evento.currentTarget.children[0].children[1].children[0].textContent || ''
     )
     localStorage.setItem(
       'contact-number',
-      evento.currentTarget.children[1].children[0].children[1].textContent
+      evento.currentTarget.children[1].children[0].children[1].textContent || ''
     )
     localStorage.setItem(
       'contact-email',
-      evento.currentTarget.children[1].children[1].children[1].textContent
+      evento.currentTarget.children[1].children[1].children[1].textContent || ''
     )
   }
 
