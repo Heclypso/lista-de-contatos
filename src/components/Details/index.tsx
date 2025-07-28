@@ -7,17 +7,16 @@ import mailIcon from '../../icons/mail_icon.svg'
 import addIcon from '../../icons/plus_icon.svg'
 
 import { Label, LabelBlack, Title } from '../../styles'
-
-const contactAvatar = localStorage.getItem('contact-avatar')?.toString()
-const contactName = localStorage.getItem('contact-name')
-const contactNumber = localStorage.getItem('contact-number')
-const contactEmail = localStorage.getItem('contact-email')
+import { useLocation } from 'react-router-dom'
 
 const Details = () => {
+  const location = useLocation()
+  const { avatar, name, number, email } = location.state || {}
+
   return (
     <S.DetailsWrapper>
-      <S.Avatar src={contactAvatar} />
-      <S.Name>{contactName}</S.Name>
+      <S.Avatar src={avatar} />
+      <S.Name>{name}</S.Name>
       <S.OptionsContainer>
         <S.OptionWrapper>
           <S.OptionIcon src={phoneIcon} />
@@ -39,14 +38,14 @@ const Details = () => {
         <S.DataItemWrapper>
           <S.OptionIcon src={phoneIcon} />
           <S.DataTextWrapper>
-            <LabelBlack>{contactNumber}</LabelBlack>
+            <LabelBlack>{number}</LabelBlack>
             <Label>Telefone</Label>
           </S.DataTextWrapper>
         </S.DataItemWrapper>
         <S.DataItemWrapper>
           <S.OptionIcon src={mailIcon} />
           <S.DataTextWrapper>
-            <LabelBlack>{contactEmail}</LabelBlack>
+            <LabelBlack>{email}</LabelBlack>
             <Label>Email</Label>
           </S.DataTextWrapper>
         </S.DataItemWrapper>

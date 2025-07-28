@@ -1,8 +1,8 @@
 import * as S from './styles'
 import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 
 import icon from '../../icons/call_icon.svg'
-import { useNavigate } from 'react-router-dom'
 import { LabelBig, Title } from '../../styles'
 
 type ContactType = {
@@ -30,24 +30,15 @@ const Contact = ({
   const [infoExpandedState, setInfoExpandedState] = useState(false)
   const navigate = useNavigate()
 
-  function getDetails(evento: React.MouseEvent<HTMLElement>) {
-    localStorage.setItem(
-      'contact-avatar',
-      evento.currentTarget.children[0].children[0].attributes[2].textContent ||
-        ''
-    )
-    localStorage.setItem(
-      'contact-name',
-      evento.currentTarget.children[0].children[1].children[0].textContent || ''
-    )
-    localStorage.setItem(
-      'contact-number',
-      evento.currentTarget.children[1].children[0].children[1].textContent || ''
-    )
-    localStorage.setItem(
-      'contact-email',
-      evento.currentTarget.children[1].children[1].children[1].textContent || ''
-    )
+  const getInfos = () => {
+    navigate('/contact-details', {
+      state: {
+        avatar: contactAvatar,
+        name: contactName,
+        number: phoneNumber,
+        email: emailAdress
+      }
+    })
   }
 
   return (
@@ -55,10 +46,10 @@ const Contact = ({
       uniqueOfWord={uniqueOfWord}
       isFirst={isFirst}
       isLast={isLast}
-      onClick={(evento) => {
+      onClick={() => {
         setBorderVisibleState(false)
         setInfoExpandedState(true)
-        infoExpandedState && !borderVisibleState && getDetails(evento)
+        infoExpandedState && !borderVisibleState && getInfos()
       }}
     >
       <S.ContactWrapper
