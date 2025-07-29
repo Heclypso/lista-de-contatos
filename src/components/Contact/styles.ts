@@ -7,13 +7,11 @@ type Props = {
   isLast?: boolean
   borderVisible?: boolean
   infoExpanded?: boolean
-  uniqueOfWord?: boolean
 }
 
 export const ContactContainer = styled.div<Props>`
   filter: drop-shadow(0px 1px 2px rgba(0, 0, 0, 0.25));
   margin: ${({ isLast }) => (isLast ? '0px 0px 16px 0px' : '')};
-  margin-bottom: ${({ uniqueOfWord }) => (uniqueOfWord ? '5rem' : '')};
 `
 
 export const ContactWrapper = styled.div<Props>`
@@ -47,11 +45,12 @@ export const ContactWrapper = styled.div<Props>`
       : ''};
 `
 
-export const ContactExpanded = styled.div`
+export const ContactExpanded = styled.div<Props>`
   height: 102px;
   background-color: ${variables.primaryColor};
   margin-bottom: 16px;
   padding: 8px 12px 12px 12px;
+  margin-top: ${({ borderVisible }) => (borderVisible ? '' : '-1px')};
 `
 
 export const ContactInfosWrapper = styled.div`

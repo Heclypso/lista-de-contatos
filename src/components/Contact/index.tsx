@@ -8,7 +8,6 @@ import { LabelBig, Title } from '../../styles'
 type ContactType = {
   isFirst?: boolean
   isLast?: boolean
-  uniqueOfWord?: boolean
   onContactsPage: boolean
   contactAvatar: string
   contactName: string
@@ -19,7 +18,6 @@ type ContactType = {
 const Contact = ({
   isFirst,
   isLast,
-  uniqueOfWord,
   onContactsPage,
   contactName,
   phoneNumber,
@@ -43,13 +41,11 @@ const Contact = ({
 
   return (
     <S.ContactContainer
-      uniqueOfWord={uniqueOfWord}
       isFirst={isFirst}
       isLast={isLast}
       onClick={() => {
-        setBorderVisibleState(false)
-        setInfoExpandedState(true)
-        infoExpandedState && !borderVisibleState && getInfos()
+        setBorderVisibleState((previousState) => !previousState)
+        setInfoExpandedState((previousState) => !previousState)
       }}
     >
       <S.ContactWrapper
@@ -78,7 +74,12 @@ const Contact = ({
             <S.ContactInfos>{emailAdress}</S.ContactInfos>
           </S.ContactInfosWrapper>
           <S.ContactButtonsWrapper>
-            <S.ContactButton onClick={() => navigate('/contact-details')}>
+            <S.ContactButton
+              onClick={() => {
+                navigate('/contact-details')
+                infoExpandedState && !borderVisibleState && getInfos()
+              }}
+            >
               Ver
             </S.ContactButton>
             <S.ContactButton>Chamar</S.ContactButton>

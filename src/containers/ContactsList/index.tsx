@@ -43,6 +43,13 @@ const ContactsList = ({ onContactsPage }: Props) => {
       name: 'Bernardo',
       email: 'bexemplo@gmail.com',
       number: '22 232425262'
+    },
+    {
+      avatar:
+        'https://pt.quizur.com/_image?href=https://img.quizur.com/f/img6297614f4e5b48.34472406.jpg?lastEdited=1654088044&w=600&h=600&f=webp',
+      name: 'Carlos',
+      email: 'cexemplo@gmail.com',
+      number: '22 232425262'
     }
   ]
 
