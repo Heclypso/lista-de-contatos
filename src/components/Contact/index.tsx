@@ -13,6 +13,7 @@ type ContactType = {
   contactName: string
   phoneNumber: string
   emailAdress: string
+  favorited: boolean
 }
 
 const Contact = ({
@@ -22,7 +23,8 @@ const Contact = ({
   contactName,
   phoneNumber,
   emailAdress,
-  contactAvatar
+  contactAvatar,
+  favorited
 }: ContactType) => {
   const [borderVisibleState, setBorderVisibleState] = useState(true)
   const [infoExpandedState, setInfoExpandedState] = useState(false)
@@ -34,7 +36,8 @@ const Contact = ({
         avatar: contactAvatar,
         name: contactName,
         number: phoneNumber,
-        email: emailAdress
+        email: emailAdress,
+        favorited: favorited
       }
     })
   }

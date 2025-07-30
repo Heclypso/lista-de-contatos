@@ -5,7 +5,7 @@ import { Container } from '../../styles'
 const Favorites = () => {
   return (
     <Container>
-      <ContactsList onContactsPage={false} />
+      <ContactsList onContactsPage={false} onFavoritesPage={true} />
       <Navbar onDetails={false} />
     </Container>
   )

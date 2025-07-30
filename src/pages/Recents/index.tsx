@@ -5,7 +5,7 @@ import { Container } from '../../styles'
 const Recents = () => {
   return (
     <Container>
-      <ContactsList onContactsPage={false} />
+      <ContactsList onContactsPage={false} onFavoritesPage={false} />
       <Navbar onDetails={false} />
     </Container>
   )

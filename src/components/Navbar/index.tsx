@@ -1,6 +1,7 @@
 import * as S from './styles'
 
 import favoriteIcon from '../../icons/favorite_icon.svg'
+import favoritedIcon from '../../icons/favorited_icon.svg'
 import recentIcon from '../../icons/clock_icon.svg'
 import contactsIcon from '../../icons/user_icon.svg'
 
@@ -8,6 +9,7 @@ import returnIcon from '../../icons/arrow_back.svg'
 import editIcon from '../../icons/edit_icon.svg'
 import deleteIcon from '../../icons/trash_cam.svg'
 import { useNavigate } from 'react-router-dom'
+import { useState } from 'react'
 
 type Props = {
   onDetails: boolean
@@ -15,6 +17,7 @@ type Props = {
 
 const Navbar = ({ onDetails }: Props) => {
   const navigate = useNavigate()
+  const [favoritedState, setFavoritedState] = useState(false)
 
   return (
     <S.Nav onDetails={onDetails}>
@@ -27,7 +30,13 @@ const Navbar = ({ onDetails }: Props) => {
           />
           <S.IconsContainer>
             <S.EditIcon src={editIcon} alt="Ícone de editar contato" />
-            <S.OptionIcon src={favoriteIcon} alt="Ícone de favoritar contato" />
+            <S.OptionIcon
+              onClick={() =>
+                setFavoritedState((previousState) => !previousState)
+              }
+              src={favoritedState === true ? favoritedIcon : favoriteIcon}
+              alt="Ícone de favoritar contato"
+            />
             <S.DeleteIcon src={deleteIcon} alt="Ícone de deletar contato" />
           </S.IconsContainer>
         </>
