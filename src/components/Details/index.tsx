@@ -1,3 +1,5 @@
+import { useLocation } from 'react-router-dom'
+
 import * as S from './styles'
 
 import phoneIcon from '../../icons/phone_icon.svg'
@@ -7,7 +9,6 @@ import mailIcon from '../../icons/mail_icon.svg'
 import addIcon from '../../icons/plus_icon.svg'
 
 import { Label, LabelBlack, Title } from '../../styles'
-import { useLocation } from 'react-router-dom'
 
 const Details = () => {
   const location = useLocation()

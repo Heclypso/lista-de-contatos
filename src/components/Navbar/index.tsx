@@ -1,3 +1,6 @@
+import { useLocation, useNavigate } from 'react-router-dom'
+import { useEffect, useState } from 'react'
+
 import * as S from './styles'
 
 import favoriteIcon from '../../icons/favorite_icon.svg'
@@ -8,8 +11,8 @@ import contactsIcon from '../../icons/user_icon.svg'
 import returnIcon from '../../icons/arrow_back.svg'
 import editIcon from '../../icons/edit_icon.svg'
 import deleteIcon from '../../icons/trash_cam.svg'
-import { useNavigate } from 'react-router-dom'
-import { useState } from 'react'
+
+import { contactsArray } from '../../scripts/package'
 
 type Props = {
   onDetails: boolean
@@ -18,23 +21,44 @@ type Props = {
 const Navbar = ({ onDetails }: Props) => {
   const navigate = useNavigate()
   const [favoritedState, setFavoritedState] = useState(false)
+  const location = useLocation()
+
+  useEffect(() => {
+    if (location.state?.favorited !== undefined) {
+      setFavoritedState(location.state.favorited)
+    }
+  }, [location.state?.favorited])
+
+  useEffect(() => {
+    console.log('Novo valor de favoritedState:', favoritedState)
+  }, [favoritedState])
 
   return (
     <S.Nav onDetails={onDetails}>
       {onDetails ? (
         <>
           <S.OptionIcon
-            onClick={() => navigate('/')}
+            onClick={() => {
+              navigate('/', {
+                state: {
+                  navBarState: location.state
+                }
+              })
+              favoritedState === true
+                ? ((location.state.favorited = true),
+                  contactsArray.push(location.state))
+                : (location.state = '')
+            }}
             src={returnIcon}
             alt="Ícone de navegar para a página anterior"
           />
           <S.IconsContainer>
             <S.EditIcon src={editIcon} alt="Ícone de editar contato" />
             <S.OptionIcon
-              onClick={() =>
+              onClick={() => {
                 setFavoritedState((previousState) => !previousState)
-              }
-              src={favoritedState === true ? favoritedIcon : favoriteIcon}
+              }}
+              src={favoritedState ? favoritedIcon : favoriteIcon}
               alt="Ícone de favoritar contato"
             />
             <S.DeleteIcon src={deleteIcon} alt="Ícone de deletar contato" />

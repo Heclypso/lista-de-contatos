@@ -13,7 +13,7 @@ type ContactType = {
   contactName: string
   phoneNumber: string
   emailAdress: string
-  favorited: boolean
+  favorited?: boolean
 }
 
 const Contact = ({
