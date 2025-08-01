@@ -20,6 +20,11 @@ export const Nav = styled.div<NavProps>`
   left: 0;
   padding: 8px 24px;
   margin: ${({ onDetails }) => (onDetails ? '4px 0px 16px 0px' : '')};
+
+  @media (min-width: 1023px) {
+    width: 23vw;
+    left: 38vw;
+  }
 `
 
 export const IconsContainer = styled.div`
