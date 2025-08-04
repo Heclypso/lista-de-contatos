@@ -3,28 +3,23 @@ import variables from '../../styles/variables'
 import { Link } from 'react-router-dom'
 
 type NavProps = {
-  onDetails: boolean
+  $onDetails: boolean
 }
 
 export const Nav = styled.div<NavProps>`
   width: 100%;
   height: 64px;
-  background-color: ${({ onDetails }) =>
-    onDetails ? 'transparent' : `${variables.primaryColor}`};
+  background-color: ${({ $onDetails }) =>
+    $onDetails ? 'transparent' : `${variables.primaryColor}`};
   display: flex;
   justify-content: space-between;
   align-items: center;
-  position: ${({ onDetails }) => (onDetails ? '' : 'absolute')};
-  top: ${({ onDetails }) => (onDetails ? '0' : '')};
-  bottom: ${({ onDetails }) => (onDetails ? '' : 0)};
+  position: ${({ $onDetails }) => ($onDetails ? '' : 'absolute')};
+  top: ${({ $onDetails }) => ($onDetails ? '0' : '')};
+  bottom: ${({ $onDetails }) => ($onDetails ? '' : 0)};
   left: 0;
   padding: 8px 24px;
-  margin: ${({ onDetails }) => (onDetails ? '4px 0px 16px 0px' : '')};
-
-  @media (min-width: 1023px) {
-    width: 23vw;
-    left: 38vw;
-  }
+  margin: ${({ $onDetails }) => ($onDetails ? '4px 0px 16px 0px' : '')};
 `
 
 export const IconsContainer = styled.div`

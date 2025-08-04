@@ -29,12 +29,8 @@ const Navbar = ({ onDetails }: Props) => {
     }
   }, [location.state?.favorited])
 
-  useEffect(() => {
-    console.log('Novo valor de favoritedState:', favoritedState)
-  }, [favoritedState])
-
   return (
-    <S.Nav onDetails={onDetails}>
+    <S.Nav $onDetails={onDetails}>
       {onDetails ? (
         <>
           <S.OptionIcon

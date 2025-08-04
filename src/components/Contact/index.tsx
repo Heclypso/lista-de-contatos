@@ -44,18 +44,18 @@ const Contact = ({
 
   return (
     <S.ContactContainer
-      isFirst={isFirst}
-      isLast={isLast}
+      $isFirst={isFirst}
+      $isLast={isLast}
       onClick={() => {
         setBorderVisibleState((previousState) => !previousState)
         setInfoExpandedState((previousState) => !previousState)
       }}
     >
       <S.ContactWrapper
-        borderVisible={borderVisibleState}
-        infoExpanded={infoExpandedState}
-        isFirst={isFirst}
-        isLast={isLast}
+        $borderVisible={borderVisibleState}
+        $infoExpanded={infoExpandedState}
+        $isFirst={isFirst}
+        $isLast={isLast}
       >
         <S.Avatar src={contactAvatar} alt="Imagem do avatar do contato" />
         <S.TextContainer>

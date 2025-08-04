@@ -3,15 +3,15 @@ import { Text } from '../../styles'
 import variables from '../../styles/variables'
 
 type Props = {
-  isFirst?: boolean
-  isLast?: boolean
-  borderVisible?: boolean
-  infoExpanded?: boolean
+  $isFirst?: boolean
+  $isLast?: boolean
+  $borderVisible?: boolean
+  $infoExpanded?: boolean
 }
 
 export const ContactContainer = styled.div<Props>`
   filter: drop-shadow(0px 1px 2px rgba(0, 0, 0, 0.25));
-  margin: ${({ isLast }) => (isLast ? '0px 0px 16px 0px' : '')};
+  margin: ${({ $isLast }) => ($isLast ? '0px 0px 16px 0px' : '')};
 `
 
 export const ContactWrapper = styled.div<Props>`
@@ -23,23 +23,23 @@ export const ContactWrapper = styled.div<Props>`
   padding: 10px;
   position: relative;
 
-  border-radius: ${({ isFirst, isLast, infoExpanded }) =>
-    !infoExpanded
-      ? isFirst && isLast
+  border-radius: ${({ $isFirst, $isLast, $infoExpanded }) =>
+    !$infoExpanded
+      ? $isFirst && $isLast
         ? '5px 5px 5px 5px'
-        : isFirst
+        : $isFirst
           ? '5px 5px 0px 0px'
-          : isLast
+          : $isLast
             ? '0px 0px 5px 5px'
             : ''
       : ''};
-  border-bottom: ${({ isFirst, isLast, borderVisible }) =>
-    borderVisible
-      ? isFirst && isLast
+  border-bottom: ${({ $isFirst, $isLast, $borderVisible }) =>
+    $borderVisible
+      ? $isFirst && $isLast
         ? ''
-        : isFirst
+        : $isFirst
           ? `1px solid ${variables.lineColor}`
-          : isLast
+          : $isLast
             ? ''
             : `1px solid ${variables.lineColor}`
       : ''};
@@ -50,7 +50,7 @@ export const ContactExpanded = styled.div<Props>`
   background-color: ${variables.primaryColor};
   margin-bottom: 16px;
   padding: 8px 12px 12px 12px;
-  margin-top: ${({ borderVisible }) => (borderVisible ? '' : '-1px')};
+  margin-top: ${({ $borderVisible }) => ($borderVisible ? '' : '-1px')};
 `
 
 export const ContactInfosWrapper = styled.div`

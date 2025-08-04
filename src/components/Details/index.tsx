@@ -26,7 +26,7 @@ const Details = () => {
 
         <S.OptionWrapper>
           <S.OptionIcon src={messageIcon} />
-          <S.OptionText textAlign={true}>Enviar mensagem</S.OptionText>
+          <S.OptionText $textAlign={true}>Enviar mensagem</S.OptionText>
         </S.OptionWrapper>
 
         <S.OptionWrapper>

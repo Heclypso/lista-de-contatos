@@ -2,7 +2,7 @@ import styled from 'styled-components'
 import variables from '../../styles/variables'
 
 type Props = {
-  textAlign?: boolean
+  $textAlign?: boolean
 }
 
 export const DetailsWrapper = styled.div`
@@ -58,7 +58,7 @@ export const OptionText = styled.h2<Props>`
   color: ${variables.secondaryColor};
   position: absolute;
   bottom: -40px;
-  text-align: ${({ textAlign }) => (textAlign ? 'center' : '')};
+  text-align: ${({ $textAlign }) => ($textAlign ? 'center' : '')};
   height: 32px;
 `
 
