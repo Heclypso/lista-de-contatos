@@ -1,16 +1,19 @@
+import { useSelector } from 'react-redux'
 import Contact from '../../components/Contact'
 import CreateNewContact from '../../components/CreateNewContact'
 import SearchBar from '../../components/SearchBar'
 import WordCategory from '../../components/WordCategory'
 
-import { ContactList, contactsArray as contacts } from '../../scripts/package'
+import { RootReducer } from '../../store'
+import ContactClass from '../../models/Contact'
 
-type Props = {
-  onContactsPage: boolean
-  onFavoritesPage: boolean
-}
+type ContactList = ContactClass
 
-const ContactsList = ({ onContactsPage, onFavoritesPage }: Props) => {
+const ContactsList = () => {
+  const { contacts, currentPage } = useSelector(
+    (state: RootReducer) => state.contacts
+  )
+
   const contactMap = new Map<string, ContactList>()
 
   contacts.forEach((contact) => contactMap.set(contact.number, contact))
@@ -22,6 +25,10 @@ const ContactsList = ({ onContactsPage, onFavoritesPage }: Props) => {
   const WordCaterysSet: Set<string> = new Set([...WordCategorys])
 
   const WordsCategoryArray = [...WordCaterysSet]
+
+  function onFavoritesPage() {
+    return currentPage === 'favorite'
+  }
 
   return (
     <>
@@ -39,27 +46,23 @@ const ContactsList = ({ onContactsPage, onFavoritesPage }: Props) => {
           (contact) => contact.favorited === true
         )
 
-        if (onFavoritesPage === true && favoritedContacts.length === 0)
-          return null
+        if (onFavoritesPage() && favoritedContacts.length === 0) return null
 
-        const contactsToUse = onFavoritesPage
+        const contactsToUse = onFavoritesPage()
           ? favoritedContacts
           : filteredContacts
 
         return (
           <div key={word}>
             <WordCategory wordCategory={word} />
-            {contactsToUse.map((contact, index) => (
+            {contactsToUse.map((c) => (
               <Contact
-                key={contact.number}
-                contactAvatar={contact.avatar}
-                contactName={contact.name}
-                phoneNumber={contact.number}
-                emailAdress={contact.email}
-                onContactsPage={onContactsPage}
-                isFirst={index === 0}
-                isLast={index === contactsToUse.length - 1}
-                favorited={contact.favorited}
+                key={c.number}
+                avatar={c.avatar}
+                name={c.name}
+                number={c.number}
+                email={c.email}
+                favorited={c.favorited}
               />
             ))}
           </div>

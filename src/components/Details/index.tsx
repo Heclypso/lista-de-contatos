@@ -1,5 +1,4 @@
-import { useLocation } from 'react-router-dom'
-
+import { useSelector } from 'react-redux'
 import * as S from './styles'
 
 import phoneIcon from '../../icons/phone_icon.svg'
@@ -10,14 +9,15 @@ import addIcon from '../../icons/plus_icon.svg'
 
 import { Label, LabelBlack, Title } from '../../styles'
 
+import { RootReducer } from '../../store'
+
 const Details = () => {
-  const location = useLocation()
-  const { avatar, name, number, email } = location.state || {}
+  const { viewContact } = useSelector((state: RootReducer) => state.contacts)
 
   return (
     <S.DetailsWrapper>
-      <S.Avatar src={avatar} />
-      <S.Name>{name}</S.Name>
+      <S.Avatar src={viewContact?.avatar} />
+      <S.Name>{viewContact?.name}</S.Name>
       <S.OptionsContainer>
         <S.OptionWrapper>
           <S.OptionIcon src={phoneIcon} />
@@ -39,14 +39,14 @@ const Details = () => {
         <S.DataItemWrapper>
           <S.OptionIcon src={phoneIcon} />
           <S.DataTextWrapper>
-            <LabelBlack>{number}</LabelBlack>
+            <LabelBlack>{viewContact?.number}</LabelBlack>
             <Label>Telefone</Label>
           </S.DataTextWrapper>
         </S.DataItemWrapper>
         <S.DataItemWrapper>
           <S.OptionIcon src={mailIcon} />
           <S.DataTextWrapper>
-            <LabelBlack>{email}</LabelBlack>
+            <LabelBlack>{viewContact?.email}</LabelBlack>
             <Label>Email</Label>
           </S.DataTextWrapper>
         </S.DataItemWrapper>

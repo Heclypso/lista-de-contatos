@@ -1,51 +1,26 @@
 import * as S from './styles'
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { useDispatch, useSelector } from 'react-redux'
 
 import icon from '../../icons/call_icon.svg'
 import { LabelBig, Title } from '../../styles'
 
-type ContactType = {
-  isFirst?: boolean
-  isLast?: boolean
-  onContactsPage: boolean
-  contactAvatar: string
-  contactName: string
-  phoneNumber: string
-  emailAdress: string
-  favorited?: boolean
-}
+import { viewContact } from '../../store/reducers/contacts'
+import ContactClass from '../../models/Contact'
+import { RootReducer } from '../../store'
 
-const Contact = ({
-  isFirst,
-  isLast,
-  onContactsPage,
-  contactName,
-  phoneNumber,
-  emailAdress,
-  contactAvatar,
-  favorited
-}: ContactType) => {
+type ContactType = ContactClass
+
+const Contact = ({ avatar, name, number, email, favorited }: ContactType) => {
   const [borderVisibleState, setBorderVisibleState] = useState(true)
   const [infoExpandedState, setInfoExpandedState] = useState(false)
   const navigate = useNavigate()
-
-  const getInfos = () => {
-    navigate('/contact-details', {
-      state: {
-        avatar: contactAvatar,
-        name: contactName,
-        number: phoneNumber,
-        email: emailAdress,
-        favorited: favorited
-      }
-    })
-  }
+  const dispatch = useDispatch()
+  const { currentPage } = useSelector((state: RootReducer) => state.contacts)
 
   return (
     <S.ContactContainer
-      $isFirst={isFirst}
-      $isLast={isLast}
       onClick={() => {
         setBorderVisibleState((previousState) => !previousState)
         setInfoExpandedState((previousState) => !previousState)
@@ -54,15 +29,15 @@ const Contact = ({
       <S.ContactWrapper
         $borderVisible={borderVisibleState}
         $infoExpanded={infoExpandedState}
-        $isFirst={isFirst}
-        $isLast={isLast}
       >
-        <S.Avatar src={contactAvatar} alt="Imagem do avatar do contato" />
+        <S.Avatar src={avatar} alt="Imagem do avatar do contato" />
         <S.TextContainer>
-          <Title>{contactName}</Title>
-          {!onContactsPage && <S.Label>Celular, 8 de jul. 14:00</S.Label>}
+          <Title>{name}</Title>
+          {currentPage === 'contact' && (
+            <S.Label>Celular, 8 de jul. 14:00</S.Label>
+          )}
         </S.TextContainer>
-        {!onContactsPage && (
+        {currentPage === 'contact' && (
           <S.CallIcon src={icon} alt="Ícone de iniciar chamada" />
         )}
       </S.ContactWrapper>
@@ -70,17 +45,21 @@ const Contact = ({
         <S.ContactExpanded>
           <S.ContactInfosWrapper>
             <LabelBig>Telefone</LabelBig>
-            <S.ContactInfos>{phoneNumber}</S.ContactInfos>
+            <S.ContactInfos>{number}</S.ContactInfos>
           </S.ContactInfosWrapper>
           <S.ContactInfosWrapper>
             <LabelBig>Email</LabelBig>
-            <S.ContactInfos>{emailAdress}</S.ContactInfos>
+            <S.ContactInfos>{email}</S.ContactInfos>
           </S.ContactInfosWrapper>
           <S.ContactButtonsWrapper>
             <S.ContactButton
               onClick={() => {
                 navigate('/contact-details')
-                infoExpandedState && !borderVisibleState && getInfos()
+                infoExpandedState &&
+                  !borderVisibleState &&
+                  dispatch(
+                    viewContact({ avatar, name, number, email, favorited })
+                  )
               }}
             >
               Ver

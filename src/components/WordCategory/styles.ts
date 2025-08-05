@@ -6,6 +6,7 @@ export const WordCategoryWrapper = styled.div`
   width: 100%;
   height: 16px;
   position: relative;
+  margin-top: 10px;
   margin-bottom: 10px;
 `
 

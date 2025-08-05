@@ -1,5 +1,6 @@
 import { useLocation, useNavigate } from 'react-router-dom'
 import { useEffect, useState } from 'react'
+import { useDispatch } from 'react-redux'
 
 import * as S from './styles'
 
@@ -12,7 +13,7 @@ import returnIcon from '../../icons/arrow_back.svg'
 import editIcon from '../../icons/edit_icon.svg'
 import deleteIcon from '../../icons/trash_cam.svg'
 
-import { contactsArray } from '../../scripts/package'
+import { removeViewContact, changeOnPage } from '../../store/reducers/contacts'
 
 type Props = {
   onDetails: boolean
@@ -22,6 +23,7 @@ const Navbar = ({ onDetails }: Props) => {
   const navigate = useNavigate()
   const [favoritedState, setFavoritedState] = useState(false)
   const location = useLocation()
+  const dispatch = useDispatch()
 
   useEffect(() => {
     if (location.state?.favorited !== undefined) {
@@ -35,15 +37,8 @@ const Navbar = ({ onDetails }: Props) => {
         <>
           <S.OptionIcon
             onClick={() => {
-              navigate('/', {
-                state: {
-                  navBarState: location.state
-                }
-              })
-              favoritedState === true
-                ? ((location.state.favorited = true),
-                  contactsArray.push(location.state))
-                : (location.state = '')
+              navigate('/')
+              dispatch(removeViewContact())
             }}
             src={returnIcon}
             alt="Ícone de navegar para a página anterior"
@@ -67,7 +62,12 @@ const Navbar = ({ onDetails }: Props) => {
               src={favoriteIcon}
               alt="Ícone da aba de contatos favoritos"
             />
-            <S.LinkOption to="/favorites">Favoritos</S.LinkOption>
+            <S.LinkOption
+              to="/favorites"
+              onClick={() => dispatch(changeOnPage('favorite'))}
+            >
+              Favoritos
+            </S.LinkOption>
           </S.OptionWrapper>
 
           <S.OptionWrapper>
@@ -75,12 +75,22 @@ const Navbar = ({ onDetails }: Props) => {
               src={recentIcon}
               alt="Ícone da aba de contatos recentes"
             />
-            <S.LinkOption to="/">Recentes</S.LinkOption>
+            <S.LinkOption
+              to="/"
+              onClick={() => dispatch(changeOnPage('recent'))}
+            >
+              Recentes
+            </S.LinkOption>
           </S.OptionWrapper>
 
           <S.OptionWrapper>
             <S.OptionIcon src={contactsIcon} alt="Ícone da aba de contatos" />
-            <S.LinkOption to="/contacts">Contatos</S.LinkOption>
+            <S.LinkOption
+              to="/contacts"
+              onClick={() => dispatch(changeOnPage('contact'))}
+            >
+              Contatos
+            </S.LinkOption>
           </S.OptionWrapper>
         </>
       )}
