@@ -18,7 +18,7 @@ export const Container = styled.div`
   background-color: ${variables.backgroundColor};
   overflow-y: scroll;
   padding-bottom: 4rem;
-  position: relative;
+  margin: 0;
 
   @media (min-width: 1023px) {
     width: 23vw;

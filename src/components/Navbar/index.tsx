@@ -1,6 +1,6 @@
-import { useLocation, useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import { useEffect, useState } from 'react'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 
 import * as S from './styles'
 
@@ -13,7 +13,14 @@ import returnIcon from '../../icons/arrow_back.svg'
 import editIcon from '../../icons/edit_icon.svg'
 import deleteIcon from '../../icons/trash_cam.svg'
 
-import { removeViewContact, changeOnPage } from '../../store/reducers/contacts'
+import {
+  removeViewContact,
+  changeOnPage,
+  // addToContacts,
+  removeFavorited,
+  favoriteContact
+} from '../../store/reducers/contacts'
+import { RootReducer } from '../../store'
 
 type Props = {
   onDetails: boolean
@@ -22,14 +29,51 @@ type Props = {
 const Navbar = ({ onDetails }: Props) => {
   const navigate = useNavigate()
   const [favoritedState, setFavoritedState] = useState(false)
-  const location = useLocation()
   const dispatch = useDispatch()
+  const currentContact = useSelector(
+    (state: RootReducer) => state.contacts.viewContact
+  )
+
+  const currentContactFavorited = currentContact?.favorited
 
   useEffect(() => {
-    if (location.state?.favorited !== undefined) {
-      setFavoritedState(location.state.favorited)
+    if (currentContactFavorited === true) {
+      setFavoritedState(currentContactFavorited)
     }
-  }, [location.state?.favorited])
+  }, [currentContactFavorited])
+
+  useEffect(() => {
+    favoritedState
+  }, [favoritedState])
+
+  function contactWasFavorited() {
+    if (!currentContact) return
+    const { id, avatar, name, number, email, favorited } = currentContact
+
+    if (favoritedState === true) {
+      dispatch(
+        favoriteContact({
+          id: id,
+          avatar: avatar,
+          name: name,
+          email: email,
+          number: number,
+          favorited: favorited
+        })
+      )
+    } else {
+      dispatch(
+        removeFavorited({
+          id: id,
+          avatar: avatar,
+          name: name,
+          email: email,
+          number: number,
+          favorited: favorited
+        })
+      )
+    }
+  }
 
   return (
     <S.Nav $onDetails={onDetails}>
@@ -39,6 +83,7 @@ const Navbar = ({ onDetails }: Props) => {
             onClick={() => {
               navigate('/')
               dispatch(removeViewContact())
+              contactWasFavorited()
             }}
             src={returnIcon}
             alt="Ícone de navegar para a página anterior"

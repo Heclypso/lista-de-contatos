@@ -5,7 +5,7 @@ import variables from '../../styles/variables'
 type Props = {
   $isFirst?: boolean
   $isLast?: boolean
-  $borderVisible?: boolean
+  $borderBottomVisible?: boolean
   $infoExpanded?: boolean
 }
 
@@ -24,7 +24,7 @@ export const ContactWrapper = styled.div<Props>`
   position: relative;
 
   border-radius: ${({ $isFirst, $isLast, $infoExpanded }) =>
-    !$infoExpanded
+    $infoExpanded
       ? $isFirst && $isLast
         ? '5px 5px 5px 5px'
         : $isFirst
@@ -33,15 +33,11 @@ export const ContactWrapper = styled.div<Props>`
             ? '0px 0px 5px 5px'
             : ''
       : ''};
-  border-bottom: ${({ $isFirst, $isLast, $borderVisible }) =>
-    $borderVisible
-      ? $isFirst && $isLast
-        ? ''
-        : $isFirst
-          ? `1px solid ${variables.lineColor}`
-          : $isLast
-            ? ''
-            : `1px solid ${variables.lineColor}`
+  border-bottom: ${({ $isLast, $borderBottomVisible }) =>
+    !$isLast
+      ? $borderBottomVisible
+        ? `1px solid ${variables.lineColor}`
+        : '1px solid transparent'
       : ''};
 `
 
@@ -50,7 +46,7 @@ export const ContactExpanded = styled.div<Props>`
   background-color: ${variables.primaryColor};
   margin-bottom: 16px;
   padding: 8px 12px 12px 12px;
-  margin-top: ${({ $borderVisible }) => ($borderVisible ? '' : '-1px')};
+  margin-top: -1px;
 `
 
 export const ContactInfosWrapper = styled.div`

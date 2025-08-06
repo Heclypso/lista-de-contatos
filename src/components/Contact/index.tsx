@@ -12,7 +12,23 @@ import { RootReducer } from '../../store'
 
 type ContactType = ContactClass
 
-const Contact = ({ avatar, name, number, email, favorited }: ContactType) => {
+type StyledContact = {
+  $isFirst: boolean
+  $isLast: boolean
+}
+
+type Props = ContactType & StyledContact
+
+const Contact = ({
+  id,
+  avatar,
+  name,
+  number,
+  email,
+  favorited,
+  $isFirst,
+  $isLast
+}: Props) => {
   const [borderVisibleState, setBorderVisibleState] = useState(true)
   const [infoExpandedState, setInfoExpandedState] = useState(false)
   const navigate = useNavigate()
@@ -27,8 +43,10 @@ const Contact = ({ avatar, name, number, email, favorited }: ContactType) => {
       }}
     >
       <S.ContactWrapper
-        $borderVisible={borderVisibleState}
-        $infoExpanded={infoExpandedState}
+        $isFirst={$isFirst}
+        $isLast={$isLast}
+        $infoExpanded={borderVisibleState}
+        $borderBottomVisible={borderVisibleState}
       >
         <S.Avatar src={avatar} alt="Imagem do avatar do contato" />
         <S.TextContainer>
@@ -58,7 +76,7 @@ const Contact = ({ avatar, name, number, email, favorited }: ContactType) => {
                 infoExpandedState &&
                   !borderVisibleState &&
                   dispatch(
-                    viewContact({ avatar, name, number, email, favorited })
+                    viewContact({ id, avatar, name, number, email, favorited })
                   )
               }}
             >

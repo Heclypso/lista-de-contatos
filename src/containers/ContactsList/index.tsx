@@ -1,4 +1,5 @@
 import { useSelector } from 'react-redux'
+import { useEffect, useState } from 'react'
 import Contact from '../../components/Contact'
 import CreateNewContact from '../../components/CreateNewContact'
 import SearchBar from '../../components/SearchBar'
@@ -14,14 +15,19 @@ const ContactsList = () => {
     (state: RootReducer) => state.contacts
   )
 
-  const contactMap = new Map<string, ContactList>()
+  const [contactArray, setContactArray] = useState<ContactClass[]>([])
 
-  contacts.forEach((contact) => contactMap.set(contact.number, contact))
+  useEffect(() => {
+    console.log(contacts)
+    const contactMap = new Map<string, ContactList>()
 
-  const contactsArray = Array.from(contactMap.values())
+    contacts.forEach((contact) => contactMap.set(contact.number, contact))
 
-  const WordCategorys = contactsArray.map((contact) => contact.name.charAt(0))
+    const contactsArray = Array.from(contactMap.values())
+    setContactArray(contactsArray)
+  }, [contacts])
 
+  const WordCategorys = contactArray.map((contact) => contact.name.charAt(0))
   const WordCaterysSet: Set<string> = new Set([...WordCategorys])
 
   const WordsCategoryArray = [...WordCaterysSet]
@@ -36,7 +42,7 @@ const ContactsList = () => {
       <CreateNewContact />
 
       {WordsCategoryArray.map((word) => {
-        const filteredContacts = contactsArray.filter(
+        const filteredContacts = contactArray.filter(
           (contact) => contact.name[0].toUpperCase() === word
         )
 
@@ -55,9 +61,12 @@ const ContactsList = () => {
         return (
           <div key={word}>
             <WordCategory wordCategory={word} />
-            {contactsToUse.map((c) => (
+            {contactsToUse.map((c, index) => (
               <Contact
+                $isFirst={index === 0}
+                $isLast={index === contactsToUse.length - 1}
                 key={c.number}
+                id={c.id}
                 avatar={c.avatar}
                 name={c.name}
                 number={c.number}
