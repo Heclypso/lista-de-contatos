@@ -1,11 +1,13 @@
 import Navbar from '../../components/Navbar'
 import ContactsList from '../../containers/ContactsList'
-import { Container } from '../../styles'
+import { Container, ContainerList } from '../../styles'
 
 const Contacts = () => {
   return (
     <Container>
-      <ContactsList />
+      <ContainerList>
+        <ContactsList />
+      </ContainerList>
       <Navbar onDetails={false} />
     </Container>
   )

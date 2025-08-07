@@ -9,6 +9,13 @@ export const GlobalStyle = createGlobalStyle`
         box-sizing: border-box;
         font-family: "Inter", sans-serif;
     }
+
+    body {
+    height: 100vh;
+      @media (min-width: 1023px) {
+        padding: 0 36vw;
+      }
+    }
 `
 
 export const Container = styled.div`
@@ -16,21 +23,30 @@ export const Container = styled.div`
   height: 100vh;
   padding: 40px 16px 0px 16px;
   background-color: ${variables.backgroundColor};
-  overflow-y: scroll;
-  padding-bottom: 4rem;
   margin: 0;
+  position: relative;
 
   @media (min-width: 1023px) {
-    width: 23vw;
-    margin: 0 auto;
+    width: 100%;
   }
 `
 
 export const ContainerDetails = styled.div`
-  width: 100vw;
+  width: 100%;
   height: 100%;
   padding: 40px 0px 0px 0px;
   background-color: ${variables.backgroundColor};
+`
+
+export const ContainerList = styled.div`
+  height: 100%;
+  overflow-y: scroll;
+  padding-bottom: 4rem;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
 `
 
 export const Title = styled.h2`
