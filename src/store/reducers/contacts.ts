@@ -90,6 +90,14 @@ const contactSlice = createSlice({
       if (contactIndex >= 0) {
         state.contacts[contactIndex].favorited = false
       }
+    },
+    deleteContact: (state, action: PayloadAction<ContactClass>) => {
+      const contactIndex = state.contacts.findIndex(
+        (c) => c.id === action.payload.id
+      )
+      if (contactIndex >= 0) {
+        state.contacts.splice(contactIndex, 1)
+      }
     }
   }
 })
@@ -100,6 +108,7 @@ export const {
   removeViewContact,
   changeOnPage,
   favoriteContact,
-  removeFavorited
+  removeFavorited,
+  deleteContact
 } = contactSlice.actions
 export default contactSlice.reducer

@@ -18,7 +18,8 @@ import {
   changeOnPage,
   // addToContacts,
   removeFavorited,
-  favoriteContact
+  favoriteContact,
+  deleteContact
 } from '../../store/reducers/contacts'
 import { RootReducer } from '../../store'
 
@@ -75,6 +76,22 @@ const Navbar = ({ onDetails }: Props) => {
     }
   }
 
+  function deleteContactFunction() {
+    if (!currentContact) return
+    const { id, avatar, name, number, email, favorited } = currentContact
+
+    dispatch(
+      deleteContact({
+        id: id,
+        avatar: avatar,
+        name: name,
+        number: number,
+        email: email,
+        favorited: favorited
+      })
+    )
+  }
+
   return (
     <S.Nav $onDetails={onDetails}>
       {onDetails ? (
@@ -97,7 +114,14 @@ const Navbar = ({ onDetails }: Props) => {
               src={favoritedState ? favoritedIcon : favoriteIcon}
               alt="Ícone de favoritar contato"
             />
-            <S.DeleteIcon src={deleteIcon} alt="Ícone de deletar contato" />
+            <S.DeleteIcon
+              onClick={() => {
+                navigate('/')
+                deleteContactFunction()
+              }}
+              src={deleteIcon}
+              alt="Ícone de deletar contato"
+            />
           </S.IconsContainer>
         </>
       ) : (
