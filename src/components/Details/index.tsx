@@ -1,4 +1,4 @@
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import * as S from './styles'
 
 import phoneIcon from '../../icons/phone_icon.svg'
@@ -10,14 +10,67 @@ import addIcon from '../../icons/plus_icon.svg'
 import { Label, LabelBlack, Title } from '../../styles'
 
 import { RootReducer } from '../../store'
+import { useEffect, useState } from 'react'
+
+import { newContact } from '../../store/reducers/contacts'
 
 const Details = () => {
   const { viewContact } = useSelector((state: RootReducer) => state.contacts)
+  const canEdit = useSelector(
+    (state: RootReducer) => state.contacts.canEditContact
+  )
+  const [avatarImage, setAvatarImage] = useState('')
+  const [createdContactName, setCreatedContactName] = useState('')
+  const [createdContactNumber, setCreatedContactNumber] = useState('')
+  const [createdContactEmail, setCreatedContactEmail] = useState('')
+  const dispatch = useDispatch()
+
+  useEffect(() => {
+    createdContactName && createdContactNumber && createdContactEmail != ''
+      ? dispatch(
+          newContact({
+            id: 10,
+            avatar: avatarImage,
+            name: createdContactName,
+            number: createdContactNumber,
+            email: createdContactEmail,
+            favorited: false
+          })
+        )
+      : ''
+  }, [
+    createdContactName,
+    createdContactNumber,
+    createdContactEmail,
+    avatarImage,
+    dispatch
+  ])
 
   return (
     <S.DetailsWrapper>
-      <S.Avatar src={viewContact?.avatar} />
-      <S.Name>{viewContact?.name}</S.Name>
+      <S.AvatarWrapper
+        $avatarImage={viewContact ? viewContact.avatar : avatarImage}
+      >
+        <S.Avatar
+          disabled={canEdit}
+          type="file"
+          onChange={(e) => {
+            const file = e.target.files?.[0]
+            if (!file) return
+            const avatarUrl = URL.createObjectURL(file)
+            setAvatarImage(avatarUrl)
+            setTimeout(() => {
+              URL.revokeObjectURL(avatarUrl)
+            }, 10000)
+          }}
+        />
+      </S.AvatarWrapper>
+      <S.Name
+        disabled={canEdit}
+        placeholder="Digite o nome"
+        value={viewContact?.name}
+        onChange={(e) => setCreatedContactName(e.target.value)}
+      />
       <S.OptionsContainer>
         <S.OptionWrapper>
           <S.OptionIcon src={phoneIcon} />
@@ -39,14 +92,24 @@ const Details = () => {
         <S.DataItemWrapper>
           <S.OptionIcon src={phoneIcon} />
           <S.DataTextWrapper>
-            <LabelBlack>{viewContact?.number}</LabelBlack>
+            <S.DataText
+              disabled={canEdit}
+              placeholder="Telefone do contato"
+              value={viewContact?.number}
+              onChange={(e) => setCreatedContactNumber(e.target.value)}
+            />
             <Label>Telefone</Label>
           </S.DataTextWrapper>
         </S.DataItemWrapper>
         <S.DataItemWrapper>
           <S.OptionIcon src={mailIcon} />
           <S.DataTextWrapper>
-            <LabelBlack>{viewContact?.email}</LabelBlack>
+            <S.DataText
+              disabled={canEdit}
+              placeholder="Email do contato"
+              value={viewContact?.email}
+              onChange={(e) => setCreatedContactEmail(e.target.value)}
+            />
             <Label>Email</Label>
           </S.DataTextWrapper>
         </S.DataItemWrapper>

@@ -5,6 +5,8 @@ type ContactState = {
   contacts: ContactClass[]
   viewContact: ContactClass | null
   currentPage: string
+  canEditContact: boolean
+  newContact: ContactClass | null
 }
 
 const initialState: ContactState = {
@@ -56,15 +58,24 @@ const initialState: ContactState = {
     }
   ],
   viewContact: null,
-  currentPage: ''
+  currentPage: '',
+  canEditContact: false,
+  newContact: null
 }
 
 const contactSlice = createSlice({
   name: 'contact',
   initialState,
   reducers: {
-    addToContacts: (state, action: PayloadAction<ContactClass>) => {
-      state.contacts.push(action.payload)
+    newContact: (state, action: PayloadAction<ContactClass>) => {
+      state.newContact = action.payload
+    },
+    addToContacts: (state) => {
+      if (!state.newContact) {
+        console.log('não existe novo contato')
+      } else {
+        state.contacts.push(state.newContact)
+      }
     },
     viewContact: (state, action: PayloadAction<ContactClass>) => {
       state.viewContact = action.payload
@@ -98,6 +109,9 @@ const contactSlice = createSlice({
       if (contactIndex >= 0) {
         state.contacts.splice(contactIndex, 1)
       }
+    },
+    changeCanEdit: (state) => {
+      state.canEditContact = !state.canEditContact
     }
   }
 })
@@ -109,6 +123,8 @@ export const {
   changeOnPage,
   favoriteContact,
   removeFavorited,
-  deleteContact
+  deleteContact,
+  changeCanEdit,
+  newContact
 } = contactSlice.actions
 export default contactSlice.reducer

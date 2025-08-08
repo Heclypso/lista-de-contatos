@@ -7,6 +7,7 @@ export const CreateNewContactWrapper = styled.div`
   position: relative;
   margin-top: 28px;
   margin-bottom: 24px;
+  cursor: pointer;
 `
 
 export const CreateNewContactButton = styled.button`
@@ -19,6 +20,7 @@ export const CreateNewContactButton = styled.button`
   position: absolute;
   top: 3px;
   left: 48px;
+  cursor: pointer;
 `
 
 export const CreateNewContactIcon = styled.img`

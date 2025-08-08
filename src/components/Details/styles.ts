@@ -3,6 +3,7 @@ import variables from '../../styles/variables'
 
 type Props = {
   $textAlign?: boolean
+  $avatarImage?: string
 }
 
 export const DetailsWrapper = styled.div`
@@ -18,16 +19,43 @@ export const DetailsWrapper = styled.div`
   }
 `
 
-export const Avatar = styled.img`
+export const Avatar = styled.input`
+  width: 120px;
+  height: 120px;
+  opacity: 0;
+`
+
+export const AvatarWrapper = styled.div<Props>`
   width: 120px;
   height: 120px;
   border-radius: 60px;
+  border: none;
+  background-image: ${({ $avatarImage }) =>
+    $avatarImage
+      ? `url(${$avatarImage})`
+      : `url(${'https://placehold.co/120x120'})`};
+  background-size: 128px 128px;
+  background-position: center;
+  background-repeat: no-repeat;
 `
 
-export const Name = styled.h1`
+export const Name = styled.input`
   font-size: 32px;
   color: ${variables.titleColor};
   margin: 16px 0px;
+  border: none;
+  width: 15rem;
+  text-align: center;
+  background-color: transparent;
+`
+
+export const DataText = styled.input`
+  font-size: 14px;
+  color: ${variables.titleColor};
+  border: none;
+  height: 18px;
+  resize: none;
+  width: 100%;
 `
 
 export const OptionsContainer = styled.div`

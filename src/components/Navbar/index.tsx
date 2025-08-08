@@ -12,14 +12,16 @@ import contactsIcon from '../../icons/user_icon.svg'
 import returnIcon from '../../icons/arrow_back.svg'
 import editIcon from '../../icons/edit_icon.svg'
 import deleteIcon from '../../icons/trash_cam.svg'
+import saveIcon from '../../icons/save_icon.svg'
 
 import {
   removeViewContact,
   changeOnPage,
-  // addToContacts,
+  addToContacts,
   removeFavorited,
   favoriteContact,
-  deleteContact
+  deleteContact,
+  changeCanEdit
 } from '../../store/reducers/contacts'
 import { RootReducer } from '../../store'
 
@@ -92,6 +94,12 @@ const Navbar = ({ onDetails }: Props) => {
     )
   }
 
+  const canEdit = useSelector(
+    (state: RootReducer) => state.contacts.canEditContact
+  )
+
+  const { newContact } = useSelector((state: RootReducer) => state.contacts)
+
   return (
     <S.Nav $onDetails={onDetails}>
       {onDetails ? (
@@ -101,12 +109,21 @@ const Navbar = ({ onDetails }: Props) => {
               navigate('/')
               dispatch(removeViewContact())
               contactWasFavorited()
+              newContact != null
+                ? dispatch(addToContacts())
+                : console.log('erro na comparação')
             }}
             src={returnIcon}
             alt="Ícone de navegar para a página anterior"
           />
           <S.IconsContainer>
-            <S.EditIcon src={editIcon} alt="Ícone de editar contato" />
+            <S.EditIcon
+              onClick={() => {
+                dispatch(changeCanEdit())
+              }}
+              src={canEdit ? editIcon : saveIcon}
+              alt="Ícone de editar contato"
+            />
             <S.OptionIcon
               onClick={() => {
                 setFavoritedState((previousState) => !previousState)
