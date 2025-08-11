@@ -74,10 +74,12 @@ const contactSlice = createSlice({
       if (!state.newContact) {
         console.log('não existe novo contato')
       } else {
-        state.contacts.push(state.newContact)
+        if (!state.contacts.some((c) => c.name === state.newContact?.name)) {
+          state.contacts.push(state.newContact)
+        }
       }
     },
-    viewContact: (state, action: PayloadAction<ContactClass>) => {
+    setViewContact: (state, action: PayloadAction<ContactClass>) => {
       state.viewContact = action.payload
     },
     removeViewContact: (state) => {
@@ -118,7 +120,7 @@ const contactSlice = createSlice({
 
 export const {
   addToContacts,
-  viewContact,
+  setViewContact,
   removeViewContact,
   changeOnPage,
   favoriteContact,

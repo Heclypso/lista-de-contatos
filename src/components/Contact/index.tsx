@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import icon from '../../icons/call_icon.svg'
 import { LabelBig, Title } from '../../styles'
 
-import { viewContact } from '../../store/reducers/contacts'
+import { setViewContact } from '../../store/reducers/contacts'
 import ContactClass from '../../models/Contact'
 import { RootReducer } from '../../store'
 
@@ -76,7 +76,14 @@ const Contact = ({
                 infoExpandedState &&
                   !borderVisibleState &&
                   dispatch(
-                    viewContact({ id, avatar, name, number, email, favorited })
+                    setViewContact({
+                      id,
+                      avatar,
+                      name,
+                      number,
+                      email,
+                      favorited
+                    })
                   )
               }}
             >

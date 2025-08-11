@@ -45,10 +45,6 @@ const Navbar = ({ onDetails }: Props) => {
     }
   }, [currentContactFavorited])
 
-  useEffect(() => {
-    favoritedState
-  }, [favoritedState])
-
   function contactWasFavorited() {
     if (!currentContact) return
     const { id, avatar, name, number, email, favorited } = currentContact
@@ -109,9 +105,8 @@ const Navbar = ({ onDetails }: Props) => {
               navigate('/')
               dispatch(removeViewContact())
               contactWasFavorited()
-              newContact != null
-                ? dispatch(addToContacts())
-                : console.log('erro na comparação')
+              newContact != null ? dispatch(addToContacts()) : ''
+              canEdit ? dispatch(changeCanEdit()) : ''
             }}
             src={returnIcon}
             alt="Ícone de navegar para a página anterior"
@@ -121,7 +116,7 @@ const Navbar = ({ onDetails }: Props) => {
               onClick={() => {
                 dispatch(changeCanEdit())
               }}
-              src={canEdit ? editIcon : saveIcon}
+              src={canEdit ? saveIcon : editIcon}
               alt="Ícone de editar contato"
             />
             <S.OptionIcon

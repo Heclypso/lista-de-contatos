@@ -17,59 +17,88 @@ import { newContact } from '../../store/reducers/contacts'
 const Details = () => {
   const { viewContact } = useSelector((state: RootReducer) => state.contacts)
   const canEdit = useSelector(
-    (state: RootReducer) => state.contacts.canEditContact
+    (state: RootReducer) => !state.contacts.canEditContact
   )
+
+  const [isEditing, setIsEditing] = useState(false)
   const [avatarImage, setAvatarImage] = useState('')
   const [createdContactName, setCreatedContactName] = useState('')
   const [createdContactNumber, setCreatedContactNumber] = useState('')
   const [createdContactEmail, setCreatedContactEmail] = useState('')
   const dispatch = useDispatch()
+  const dinamicId = useSelector(
+    (state: RootReducer) => state.contacts.contacts.length + 1
+  )
 
   useEffect(() => {
-    createdContactName && createdContactNumber && createdContactEmail != ''
-      ? dispatch(
-          newContact({
-            id: 10,
-            avatar: avatarImage,
-            name: createdContactName,
-            number: createdContactNumber,
-            email: createdContactEmail,
-            favorited: false
-          })
-        )
-      : ''
+    if (viewContact && !isEditing) {
+      setCreatedContactName(viewContact.name)
+      setCreatedContactNumber(viewContact.number)
+      setCreatedContactEmail(viewContact.email)
+      setAvatarImage(viewContact.avatar)
+    }
+  }, [viewContact, isEditing])
+
+  useEffect(() => {
+    if (
+      isEditing &&
+      createdContactName &&
+      createdContactNumber &&
+      createdContactEmail !== ''
+    ) {
+      dispatch(
+        newContact({
+          id: dinamicId,
+          avatar: avatarImage,
+          name: createdContactName,
+          number: createdContactNumber,
+          email: createdContactEmail,
+          favorited: false
+        })
+      )
+    }
   }, [
     createdContactName,
     createdContactNumber,
     createdContactEmail,
     avatarImage,
-    dispatch
+    dispatch,
+    dinamicId,
+    isEditing,
+    viewContact
   ])
+
+  const resolvedAvatarImage =
+    !viewContact || !canEdit ? avatarImage : viewContact.avatar
 
   return (
     <S.DetailsWrapper>
-      <S.AvatarWrapper
-        $avatarImage={viewContact ? viewContact.avatar : avatarImage}
-      >
+      <S.AvatarWrapper $avatarImage={resolvedAvatarImage}>
         <S.Avatar
           disabled={canEdit}
           type="file"
           onChange={(e) => {
+            setIsEditing(true)
             const file = e.target.files?.[0]
             if (!file) return
+
+            if (avatarImage) {
+              URL.revokeObjectURL(avatarImage)
+            }
+
             const avatarUrl = URL.createObjectURL(file)
             setAvatarImage(avatarUrl)
-            setTimeout(() => {
-              URL.revokeObjectURL(avatarUrl)
-            }, 10000)
           }}
         />
       </S.AvatarWrapper>
       <S.Name
         disabled={canEdit}
         placeholder="Digite o nome"
-        value={viewContact?.name}
-        onChange={(e) => setCreatedContactName(e.target.value)}
+        value={createdContactName}
+        onChange={(e) => {
+          setIsEditing(true)
+          setCreatedContactName(e.target.value)
+        }}
       />
       <S.OptionsContainer>
         <S.OptionWrapper>
@@ -95,8 +124,11 @@ const Details = () => {
             <S.DataText
               disabled={canEdit}
               placeholder="Telefone do contato"
-              value={viewContact?.number}
-              onChange={(e) => setCreatedContactNumber(e.target.value)}
+              value={createdContactNumber}
+              onChange={(e) => {
+                setIsEditing(true)
+                setCreatedContactNumber(e.target.value)
+              }}
             />
             <Label>Telefone</Label>
           </S.DataTextWrapper>
@@ -107,8 +139,11 @@ const Details = () => {
             <S.DataText
               disabled={canEdit}
               placeholder="Email do contato"
-              value={viewContact?.email}
-              onChange={(e) => setCreatedContactEmail(e.target.value)}
+              value={createdContactEmail}
+              onChange={(e) => {
+                setIsEditing(true)
+                setCreatedContactEmail(e.target.value)
+              }}
             />
             <Label>Email</Label>
           </S.DataTextWrapper>
