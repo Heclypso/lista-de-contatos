@@ -68,8 +68,7 @@ const Details = () => {
     viewContact
   ])
 
-  const resolvedAvatarImage =
-    !viewContact || !canEdit ? avatarImage : viewContact.avatar
+  const resolvedAvatarImage = avatarImage ? avatarImage : viewContact?.avatar
 
   return (
     <S.DetailsWrapper>
