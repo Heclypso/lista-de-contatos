@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import icon from '../../icons/call_icon.svg'
 import { LabelBig, Title } from '../../styles'
 
-import { setViewContact } from '../../store/reducers/contacts'
+import { setLastCall, setViewContact } from '../../store/reducers/contacts'
 import ContactClass from '../../models/Contact'
 import { RootReducer } from '../../store'
 
@@ -35,6 +35,15 @@ const Contact = ({
   const dispatch = useDispatch()
   const { currentPage } = useSelector((state: RootReducer) => state.contacts)
 
+  function getLastCallTime() {
+    const date = new Date()
+    const seconds = date.getHours()
+    const minutes = date.getMinutes()
+    const hours = date.getHours()
+    const lastCall = `${hours}:${minutes}:${seconds}`
+    return lastCall.toString()
+  }
+
   return (
     <S.ContactContainer
       onClick={() => {
@@ -55,8 +64,24 @@ const Contact = ({
             <S.Label>Celular, 8 de jul. 14:00</S.Label>
           )}
         </S.TextContainer>
-        {currentPage === 'contact' && (
-          <S.CallIcon src={icon} alt="Ícone de iniciar chamada" />
+        {currentPage === 'contact' && infoExpandedState === false && (
+          <S.CallIcon
+            onClick={() =>
+              dispatch(
+                setLastCall({
+                  id: id,
+                  avatar: avatar,
+                  name: name,
+                  number: number,
+                  email: email,
+                  favorited: favorited,
+                  lastCall: getLastCallTime()
+                })
+              )
+            }
+            src={icon}
+            alt="Ícone de iniciar chamada"
+          />
         )}
       </S.ContactWrapper>
       {infoExpandedState && !borderVisibleState && (
@@ -89,7 +114,23 @@ const Contact = ({
             >
               Ver
             </S.ContactButton>
-            <S.ContactButton>Chamar</S.ContactButton>
+            <S.ContactButton
+              onClick={() =>
+                dispatch(
+                  setLastCall({
+                    id: id,
+                    avatar: avatar,
+                    name: name,
+                    number: number,
+                    email: email,
+                    favorited: favorited,
+                    lastCall: getLastCallTime()
+                  })
+                )
+              }
+            >
+              Chamar
+            </S.ContactButton>
           </S.ContactButtonsWrapper>
         </S.ContactExpanded>
       )}

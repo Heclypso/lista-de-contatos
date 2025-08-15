@@ -7,18 +7,19 @@ import WordCategory from '../../components/WordCategory'
 
 import { RootReducer } from '../../store'
 import ContactClass from '../../models/Contact'
+import { Title } from '../../styles'
+import { TextContainer } from './styles'
 
 type ContactList = ContactClass
 
 const ContactsList = () => {
-  const { contacts, currentPage } = useSelector(
+  const { contacts, currentPage, searchValue } = useSelector(
     (state: RootReducer) => state.contacts
   )
 
   const [contactArray, setContactArray] = useState<ContactClass[]>([])
 
   useEffect(() => {
-    console.log(contacts)
     const contactMap = new Map<string, ContactList>()
 
     contacts.forEach((contact) => contactMap.set(contact.number, contact))
@@ -32,6 +33,14 @@ const ContactsList = () => {
 
   const WordsCategoryArray = [...WordCaterysSet]
 
+  function onContactPage() {
+    return currentPage === 'contact'
+  }
+
+  function onRecentsPage() {
+    return currentPage === 'recent'
+  }
+
   function onFavoritesPage() {
     return currentPage === 'favorite'
   }
@@ -41,42 +50,63 @@ const ContactsList = () => {
       <SearchBar />
       <CreateNewContact />
 
-      {WordsCategoryArray.map((word) => {
-        const filteredContacts = contactArray.filter(
-          (contact) => contact.name[0].toUpperCase() === word
-        )
+      {onContactPage() && contactArray.length === 0 ? (
+        <TextContainer>
+          <Title>Lista de contatos vazia, adicione um novo contato.</Title>
+        </TextContainer>
+      ) : onRecentsPage() && contactArray.length === 0 ? (
+        <TextContainer>
+          <Title>Não existem contatos recentes.</Title>
+        </TextContainer>
+      ) : onFavoritesPage() &&
+        contactArray.filter((c) => c.favorited).length === 0 ? (
+        <TextContainer>
+          <Title>Não existem contatos favoritados.</Title>
+        </TextContainer>
+      ) : (
+        WordsCategoryArray.map((word) => {
+          const filteredContacts = contactArray.filter(
+            (contact) => contact.name[0].toUpperCase() === word
+          )
 
-        if (filteredContacts.length === 0) return null
+          if (filteredContacts.length === 0) return null
 
-        const favoritedContacts = filteredContacts.filter(
-          (contact) => contact.favorited === true
-        )
+          const favoritedContacts = filteredContacts.filter(
+            (contact) => contact.favorited
+          )
 
-        if (onFavoritesPage() && favoritedContacts.length === 0) return null
+          if (onFavoritesPage() && favoritedContacts.length === 0) return null
 
-        const contactsToUse = onFavoritesPage()
-          ? favoritedContacts
-          : filteredContacts
+          const searchedContacts = contacts.filter((c) =>
+            c.name.toLocaleLowerCase().includes(searchValue)
+          )
 
-        return (
-          <div key={word}>
-            <WordCategory wordCategory={word} />
-            {contactsToUse.map((c, index) => (
-              <Contact
-                $isFirst={index === 0}
-                $isLast={index === contactsToUse.length - 1}
-                key={c.number}
-                id={c.id}
-                avatar={c.avatar}
-                name={c.name}
-                number={c.number}
-                email={c.email}
-                favorited={c.favorited}
-              />
-            ))}
-          </div>
-        )
-      })}
+          const contactsToUse = onFavoritesPage()
+            ? favoritedContacts
+            : searchedContacts
+              ? searchedContacts
+              : filteredContacts
+
+          return (
+            <div key={word}>
+              <WordCategory wordCategory={word} />
+              {contactsToUse.map((c, index) => (
+                <Contact
+                  $isFirst={index === 0}
+                  $isLast={index === contactsToUse.length - 1}
+                  key={c.number}
+                  id={c.id}
+                  avatar={c.avatar}
+                  name={c.name}
+                  number={c.number}
+                  email={c.email}
+                  favorited={c.favorited}
+                />
+              ))}
+            </div>
+          )
+        })
+      )}
     </>
   )
 }

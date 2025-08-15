@@ -5,6 +5,7 @@ class Contact {
   number: string
   email: string
   favorited: boolean
+  lastCall?: string
 
   constructor(
     id: number,
@@ -12,7 +13,8 @@ class Contact {
     name: string,
     number: string,
     email: string,
-    favorited: boolean
+    favorited: boolean,
+    lastCall: string
   ) {
     this.id = id
     this.avatar = avatar
@@ -20,6 +22,7 @@ class Contact {
     this.number = number
     this.email = email
     this.favorited = favorited
+    this.lastCall = lastCall
   }
 }
 
