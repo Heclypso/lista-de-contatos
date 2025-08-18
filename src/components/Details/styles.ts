@@ -13,6 +13,7 @@ export const DetailsWrapper = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  position: relative;
 
   div:nth-child(5) {
     height: 86px;
@@ -115,4 +116,17 @@ export const DataItemWrapper = styled.div`
 
 export const DataTextWrapper = styled.div`
   margin-left: 16px;
+`
+
+export const Error = styled.div`
+  width: 100%;
+  height: 52px;
+  background-color: ${variables.errorBackgroundColor};
+  padding: 16px;
+  text-align: center;
+  color: ${variables.errorTextColor};
+  font-size: 16px;
+  position: absolute;
+  top: 0;
+  left: 0;
 `

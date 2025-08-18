@@ -50,9 +50,8 @@ const Contact = ({
 
     const hours = string.slice(0, 2)
     const minutes = string.slice(2, 4)
-    const seconds = string.slice(4, 6)
 
-    return `${hours}:${minutes}:${seconds}`
+    return `${hours}:${minutes}`
   }
 
   return (

@@ -49,7 +49,7 @@ const ContactsList = () => {
   else if (onRecentsPage())
     contactsToUse = [...filteredContacts]
       .filter((c) => c.lastCall != 0)
-      .sort((a, b) => (a.lastCall ?? 0) - (b.lastCall ?? 0))
+      .sort((a, b) => (b.lastCall ?? 0) - (a.lastCall ?? 0))
   else if (onContactPage()) contactsToUse = filteredContacts
 
   if (searchValue)

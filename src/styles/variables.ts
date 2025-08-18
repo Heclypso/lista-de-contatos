@@ -5,5 +5,7 @@ export default {
   titleColor: '#050505',
   textColor: '#65676B',
   lineColor: '#C7CAD2',
-  buttonHoverColor: '#F9F9F9'
+  buttonHoverColor: '#F9F9F9',
+  errorTextColor: '#da3434',
+  errorBackgroundColor: '#f2bab9'
 }
