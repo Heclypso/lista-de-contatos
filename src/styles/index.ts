@@ -61,6 +61,10 @@ export const Text = styled.p`
   color: ${variables.textColor};
 `
 
+export const TextExtraSmall = styled(Text)`
+  font-size: 11px;
+`
+
 export const TextSmall = styled(Text)`
   font-size: 12px;
   color: ${variables.secondaryColor};

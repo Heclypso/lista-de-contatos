@@ -97,7 +97,7 @@ const ContactsList = () => {
               {contactsByWord.map((c, index) => (
                 <Contact
                   $isFirst={index === 0}
-                  $isLast={index === contactsToUse.length - 1}
+                  $isLast={index === contactsByWord.length - 1}
                   key={c.number}
                   id={c.id}
                   avatar={c.avatar}
