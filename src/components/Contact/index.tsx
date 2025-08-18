@@ -45,6 +45,16 @@ const Contact = ({
     return lastCall
   }
 
+  function formatLastCall(lastcall: number) {
+    const string = lastcall.toString()
+
+    const hours = string.slice(0, 2)
+    const minutes = string.slice(2, 4)
+    const seconds = string.slice(4, 6)
+
+    return `${hours}:${minutes}:${seconds}`
+  }
+
   return (
     <S.ContactContainer
       onClick={() => {
@@ -61,8 +71,8 @@ const Contact = ({
         <S.Avatar src={avatar} alt="Imagem do avatar do contato" />
         <S.TextContainer>
           <Title>{name}</Title>
-          {currentPage === 'contact' && (
-            <S.Label>Celular, 8 de jul. 14:00</S.Label>
+          {currentPage === 'recent' && (
+            <S.Label>Hoje às {formatLastCall(lastCall)}</S.Label>
           )}
         </S.TextContainer>
         {currentPage === 'contact' && infoExpandedState === false && (

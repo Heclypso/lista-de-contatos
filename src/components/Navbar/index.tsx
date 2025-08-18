@@ -1,5 +1,5 @@
 import { useNavigate } from 'react-router-dom'
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 
 import * as S from './styles'
@@ -14,15 +14,7 @@ import editIcon from '../../icons/edit_icon.svg'
 import deleteIcon from '../../icons/trash_cam.svg'
 import saveIcon from '../../icons/save_icon.svg'
 
-import {
-  removeViewContact,
-  changeOnPage,
-  addToContacts,
-  removeFavorited,
-  favoriteContact,
-  deleteContact,
-  changeCanEdit
-} from '../../store/reducers/contacts'
+import * as A from '../../store/reducers/contacts'
 import { RootReducer } from '../../store'
 
 type Props = {
@@ -31,7 +23,7 @@ type Props = {
 
 const Navbar = ({ onDetails }: Props) => {
   const navigate = useNavigate()
-  const [favoritedState, setFavoritedState] = useState(false)
+  const { favoritedState } = useSelector((state: RootReducer) => state.contacts)
   const dispatch = useDispatch()
   const currentContact = useSelector(
     (state: RootReducer) => state.contacts.viewContact
@@ -41,18 +33,20 @@ const Navbar = ({ onDetails }: Props) => {
 
   useEffect(() => {
     if (currentContactFavorited === true) {
-      setFavoritedState(currentContactFavorited)
+      dispatch(A.setFavoritedState(currentContactFavorited))
     }
-  }, [currentContactFavorited])
+  }, [currentContactFavorited, dispatch])
 
   function contactWasFavorited() {
     if (!currentContact) return
     const { id, avatar, name, number, email, favorited, lastCall } =
       currentContact
 
+    console.log(favoritedState)
+
     if (favoritedState === true) {
       dispatch(
-        favoriteContact({
+        A.favoriteContact({
           id: id,
           avatar: avatar,
           name: name,
@@ -64,7 +58,7 @@ const Navbar = ({ onDetails }: Props) => {
       )
     } else {
       dispatch(
-        removeFavorited({
+        A.removeFavorited({
           id: id,
           avatar: avatar,
           name: name,
@@ -83,7 +77,7 @@ const Navbar = ({ onDetails }: Props) => {
       currentContact
 
     dispatch(
-      deleteContact({
+      A.deleteContact({
         id: id,
         avatar: avatar,
         name: name,
@@ -108,10 +102,10 @@ const Navbar = ({ onDetails }: Props) => {
           <S.OptionIcon
             onClick={() => {
               navigate('/')
-              dispatch(removeViewContact())
+              dispatch(A.removeViewContact())
               contactWasFavorited()
-              newContact != null ? dispatch(addToContacts()) : ''
-              canEdit ? dispatch(changeCanEdit()) : ''
+              newContact != null ? dispatch(A.addToContacts()) : ''
+              canEdit ? dispatch(A.changeCanEdit()) : ''
             }}
             src={returnIcon}
             alt="Ícone de navegar para a página anterior"
@@ -119,14 +113,14 @@ const Navbar = ({ onDetails }: Props) => {
           <S.IconsContainer>
             <S.EditIcon
               onClick={() => {
-                dispatch(changeCanEdit())
+                dispatch(A.changeCanEdit())
               }}
               src={canEdit ? saveIcon : editIcon}
               alt="Ícone de editar contato"
             />
             <S.OptionIcon
               onClick={() => {
-                setFavoritedState((previousState) => !previousState)
+                dispatch(A.setFavoritedState(!favoritedState))
               }}
               src={favoritedState ? favoritedIcon : favoriteIcon}
               alt="Ícone de favoritar contato"
@@ -150,7 +144,7 @@ const Navbar = ({ onDetails }: Props) => {
             />
             <S.LinkOption
               to="/favorites"
-              onClick={() => dispatch(changeOnPage('favorite'))}
+              onClick={() => dispatch(A.changeOnPage('favorite'))}
             >
               Favoritos
             </S.LinkOption>
@@ -163,7 +157,7 @@ const Navbar = ({ onDetails }: Props) => {
             />
             <S.LinkOption
               to="/"
-              onClick={() => dispatch(changeOnPage('recent'))}
+              onClick={() => dispatch(A.changeOnPage('recent'))}
             >
               Recentes
             </S.LinkOption>
@@ -173,7 +167,7 @@ const Navbar = ({ onDetails }: Props) => {
             <S.OptionIcon src={contactsIcon} alt="Ícone da aba de contatos" />
             <S.LinkOption
               to="/contacts"
-              onClick={() => dispatch(changeOnPage('contact'))}
+              onClick={() => dispatch(A.changeOnPage('contact'))}
             >
               Contatos
             </S.LinkOption>

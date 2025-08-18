@@ -8,6 +8,7 @@ type ContactState = {
   canEditContact: boolean
   newContact: ContactClass | null
   searchValue: string
+  favoritedState: boolean
 }
 
 const initialState: ContactState = {
@@ -16,7 +17,8 @@ const initialState: ContactState = {
   currentPage: 'contact',
   canEditContact: false,
   newContact: null,
-  searchValue: ''
+  searchValue: '',
+  favoritedState: false
 }
 
 const contactSlice = createSlice({
@@ -80,9 +82,10 @@ const contactSlice = createSlice({
       )
       if (contactIndex >= 0) {
         state.contacts[contactIndex].lastCall = action.payload.lastCall
-
-        console.log(state.contacts[contactIndex].lastCall)
       }
+    },
+    setFavoritedState: (state, action: PayloadAction<boolean>) => {
+      state.favoritedState = action.payload
     }
   }
 })
@@ -98,6 +101,7 @@ export const {
   changeCanEdit,
   newContact,
   setSearchValue,
-  setLastCall
+  setLastCall,
+  setFavoritedState
 } = contactSlice.actions
 export default contactSlice.reducer

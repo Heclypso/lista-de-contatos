@@ -20,6 +20,8 @@ const Details = () => {
     (state: RootReducer) => !state.contacts.canEditContact
   )
 
+  const { favoritedState } = useSelector((state: RootReducer) => state.contacts)
+
   const [isEditing, setIsEditing] = useState(false)
   const [avatarImage, setAvatarImage] = useState('')
   const [createdContactName, setCreatedContactName] = useState('')
@@ -53,7 +55,7 @@ const Details = () => {
           name: createdContactName,
           number: createdContactNumber,
           email: createdContactEmail,
-          favorited: false,
+          favorited: favoritedState,
           lastCall: 0
         })
       )
@@ -66,7 +68,8 @@ const Details = () => {
     dispatch,
     dinamicId,
     isEditing,
-    viewContact
+    viewContact,
+    favoritedState
   ])
 
   const resolvedAvatarImage = avatarImage ? avatarImage : viewContact?.avatar

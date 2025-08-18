@@ -67,13 +67,19 @@ const ContactsList = () => {
       <SearchBar />
       <CreateNewContact />
 
-      {onContactPage() && contactsToUse.length === 0 ? (
+      {onContactPage() &&
+      contactsToUse.length === 0 &&
+      searchValue.length === 0 ? (
         <TextContainer>
           <Title>Lista de contatos vazia, adicione um novo contato.</Title>
         </TextContainer>
       ) : onRecentsPage() && contactsToUse.length === 0 ? (
         <TextContainer>
-          <Title>Não existem contatos recentes.</Title>
+          <Title>Não existem chamadas recentes.</Title>
+        </TextContainer>
+      ) : searchValue.length > 0 ? (
+        <TextContainer>
+          <Title>Nenhum contato corresponde à pesquisa</Title>
         </TextContainer>
       ) : onFavoritesPage() &&
         contactsToUse.filter((c) => c.favorited).length === 0 ? (
