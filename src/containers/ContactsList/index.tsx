@@ -17,22 +17,6 @@ const ContactsList = () => {
     (state: RootReducer) => state.contacts
   )
 
-  const [contactArray, setContactArray] = useState<ContactClass[]>([])
-
-  useEffect(() => {
-    const contactMap = new Map<string, ContactList>()
-
-    contacts.forEach((contact) => contactMap.set(contact.number, contact))
-
-    const contactsArray = Array.from(contactMap.values())
-    setContactArray(contactsArray)
-  }, [contacts])
-
-  const WordCategorys = contactArray.map((contact) => contact.name.charAt(0))
-  const WordCaterysSet: Set<string> = new Set([...WordCategorys])
-
-  const WordsCategoryArray = [...WordCaterysSet]
-
   function onContactPage() {
     return currentPage === 'contact'
   }
@@ -45,52 +29,66 @@ const ContactsList = () => {
     return currentPage === 'favorite'
   }
 
+  const [contactArray, setContactArray] = useState<ContactClass[]>([])
+
+  useEffect(() => {
+    const contactMap = new Map<string, ContactList>()
+
+    contacts.forEach((contact) => contactMap.set(contact.number, contact))
+
+    const contactsArray = Array.from(contactMap.values())
+    setContactArray(contactsArray)
+  }, [contacts])
+
+  const filteredContacts = [...contactArray]
+
+  let contactsToUse: ContactClass[] = []
+
+  if (onFavoritesPage())
+    contactsToUse = [...filteredContacts].filter((contact) => contact.favorited)
+  else if (onRecentsPage())
+    contactsToUse = [...filteredContacts]
+      .filter((c) => c.lastCall != 0)
+      .sort((a, b) => (a.lastCall ?? 0) - (b.lastCall ?? 0))
+  else if (onContactPage()) contactsToUse = filteredContacts
+
+  if (searchValue)
+    contactsToUse = contacts.filter((c) =>
+      c.name.toLocaleLowerCase().includes(searchValue)
+    )
+
+  const WordCategorys = contactsToUse.map((contact) => contact.name.charAt(0))
+  const WordCaterysSet: Set<string> = new Set([...WordCategorys])
+
+  const WordsCategoryArray = [...WordCaterysSet]
+
   return (
     <>
       <SearchBar />
       <CreateNewContact />
 
-      {onContactPage() && contactArray.length === 0 ? (
+      {onContactPage() && contactsToUse.length === 0 ? (
         <TextContainer>
           <Title>Lista de contatos vazia, adicione um novo contato.</Title>
         </TextContainer>
-      ) : onRecentsPage() && contactArray.length === 0 ? (
+      ) : onRecentsPage() && contactsToUse.length === 0 ? (
         <TextContainer>
           <Title>Não existem contatos recentes.</Title>
         </TextContainer>
       ) : onFavoritesPage() &&
-        contactArray.filter((c) => c.favorited).length === 0 ? (
+        contactsToUse.filter((c) => c.favorited).length === 0 ? (
         <TextContainer>
           <Title>Não existem contatos favoritados.</Title>
         </TextContainer>
       ) : (
         WordsCategoryArray.map((word) => {
-          const filteredContacts = contactArray.filter(
-            (contact) => contact.name[0].toUpperCase() === word
+          const contactsByWord = contactsToUse.filter(
+            (c) => c.name[0].toUpperCase() === word
           )
-
-          if (filteredContacts.length === 0) return null
-
-          const favoritedContacts = filteredContacts.filter(
-            (contact) => contact.favorited
-          )
-
-          if (onFavoritesPage() && favoritedContacts.length === 0) return null
-
-          const searchedContacts = contacts.filter((c) =>
-            c.name.toLocaleLowerCase().includes(searchValue)
-          )
-
-          const contactsToUse = onFavoritesPage()
-            ? favoritedContacts
-            : searchedContacts
-              ? searchedContacts
-              : filteredContacts
-
           return (
             <div key={word}>
               <WordCategory wordCategory={word} />
-              {contactsToUse.map((c, index) => (
+              {contactsByWord.map((c, index) => (
                 <Contact
                   $isFirst={index === 0}
                   $isLast={index === contactsToUse.length - 1}
@@ -101,6 +99,7 @@ const ContactsList = () => {
                   number={c.number}
                   email={c.email}
                   favorited={c.favorited}
+                  lastCall={c.lastCall}
                 />
               ))}
             </div>

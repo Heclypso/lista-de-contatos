@@ -47,7 +47,8 @@ const Navbar = ({ onDetails }: Props) => {
 
   function contactWasFavorited() {
     if (!currentContact) return
-    const { id, avatar, name, number, email, favorited } = currentContact
+    const { id, avatar, name, number, email, favorited, lastCall } =
+      currentContact
 
     if (favoritedState === true) {
       dispatch(
@@ -57,7 +58,8 @@ const Navbar = ({ onDetails }: Props) => {
           name: name,
           email: email,
           number: number,
-          favorited: favorited
+          favorited: favorited,
+          lastCall: lastCall
         })
       )
     } else {
@@ -68,7 +70,8 @@ const Navbar = ({ onDetails }: Props) => {
           name: name,
           email: email,
           number: number,
-          favorited: favorited
+          favorited: favorited,
+          lastCall: lastCall
         })
       )
     }
@@ -76,7 +79,8 @@ const Navbar = ({ onDetails }: Props) => {
 
   function deleteContactFunction() {
     if (!currentContact) return
-    const { id, avatar, name, number, email, favorited } = currentContact
+    const { id, avatar, name, number, email, favorited, lastCall } =
+      currentContact
 
     dispatch(
       deleteContact({
@@ -85,7 +89,8 @@ const Navbar = ({ onDetails }: Props) => {
         name: name,
         number: number,
         email: email,
-        favorited: favorited
+        favorited: favorited,
+        lastCall: lastCall
       })
     )
   }

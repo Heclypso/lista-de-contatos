@@ -53,7 +53,8 @@ const Details = () => {
           name: createdContactName,
           number: createdContactNumber,
           email: createdContactEmail,
-          favorited: false
+          favorited: false,
+          lastCall: 0
         })
       )
     }

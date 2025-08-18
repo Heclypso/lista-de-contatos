@@ -26,6 +26,7 @@ const Contact = ({
   number,
   email,
   favorited,
+  lastCall,
   $isFirst,
   $isLast
 }: Props) => {
@@ -37,11 +38,11 @@ const Contact = ({
 
   function getLastCallTime() {
     const date = new Date()
-    const seconds = date.getHours()
+    const seconds = date.getSeconds()
     const minutes = date.getMinutes()
     const hours = date.getHours()
-    const lastCall = `${hours}:${minutes}:${seconds}`
-    return lastCall.toString()
+    const lastCall = hours * 10000 + minutes * 100 + seconds
+    return lastCall
   }
 
   return (
@@ -107,7 +108,8 @@ const Contact = ({
                       name,
                       number,
                       email,
-                      favorited
+                      favorited,
+                      lastCall
                     })
                   )
               }}
