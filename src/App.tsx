@@ -7,6 +7,7 @@ import Recents from './pages/Recents'
 import ContactDetails from './pages/ContactsDetails'
 import {} from './components/Navbar'
 import store from './store'
+import Call from './pages/Call'
 
 const routes = createBrowserRouter([
   {
@@ -24,6 +25,10 @@ const routes = createBrowserRouter([
   {
     path: '/contact-details',
     element: <ContactDetails />
+  },
+  {
+    path: '/call',
+    element: <Call />
   }
 ])
 

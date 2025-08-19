@@ -76,7 +76,7 @@ const Contact = ({
         </S.TextContainer>
         {currentPage === 'contact' && infoExpandedState === false && (
           <S.CallIcon
-            onClick={() =>
+            onClick={() => {
               dispatch(
                 setLastCall({
                   id: id,
@@ -88,7 +88,8 @@ const Contact = ({
                   lastCall: getLastCallTime()
                 })
               )
-            }
+              navigate('/call')
+            }}
             src={icon}
             alt="Ícone de iniciar chamada"
           />
