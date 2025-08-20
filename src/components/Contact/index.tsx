@@ -88,6 +88,17 @@ const Contact = ({
                   lastCall: getLastCallTime()
                 })
               )
+              dispatch(
+                setViewContact({
+                  id,
+                  avatar,
+                  name,
+                  number,
+                  email,
+                  favorited,
+                  lastCall
+                })
+              )
               navigate('/call')
             }}
             src={icon}
@@ -127,7 +138,7 @@ const Contact = ({
               Ver
             </S.ContactButton>
             <S.ContactButton
-              onClick={() =>
+              onClick={() => {
                 dispatch(
                   setLastCall({
                     id: id,
@@ -139,7 +150,19 @@ const Contact = ({
                     lastCall: getLastCallTime()
                   })
                 )
-              }
+                dispatch(
+                  setViewContact({
+                    id,
+                    avatar,
+                    name,
+                    number,
+                    email,
+                    favorited,
+                    lastCall
+                  })
+                )
+                navigate('/call')
+              }}
             >
               Chamar
             </S.ContactButton>
