@@ -12,7 +12,12 @@ import { Label, LabelBlack, Title } from '../../styles'
 import { RootReducer } from '../../store'
 import { useEffect, useState } from 'react'
 
-import { newContact, setFormError } from '../../store/reducers/contacts'
+import {
+  newContact,
+  setFormError,
+  setViewContact
+} from '../../store/reducers/contacts'
+import { useNavigate } from 'react-router-dom'
 
 const Details = () => {
   const { viewContact } = useSelector((state: RootReducer) => state.contacts)
@@ -29,6 +34,7 @@ const Details = () => {
   const [createdContactNumber, setCreatedContactNumber] = useState('')
   const [createdContactEmail, setCreatedContactEmail] = useState('')
   const dispatch = useDispatch()
+  const navigate = useNavigate()
   const dinamicId = useSelector(
     (state: RootReducer) => state.contacts.contacts.length + 1
   )
@@ -116,7 +122,7 @@ const Details = () => {
           }}
         />
         <S.OptionsContainer>
-          <S.OptionWrapper>
+          <S.OptionWrapper onClick={() => navigate('/call')}>
             <S.OptionIcon src={phoneIcon} />
             <S.OptionText>Ligar</S.OptionText>
           </S.OptionWrapper>

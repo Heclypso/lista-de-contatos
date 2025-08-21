@@ -76,6 +76,7 @@ export const OptionWrapper = styled.div`
   align-items: center;
   justify-content: center;
   margin-bottom: 52px;
+  cursor: pointer;
 `
 
 export const OptionIcon = styled.img`
