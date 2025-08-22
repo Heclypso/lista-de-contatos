@@ -96,10 +96,14 @@ const Details = () => {
     setIsEditing(true)
     setCreatedContactName(value)
 
-    if (value.length > 3 && value.length < 12) {
+    const words = value.split(' ')
+
+    if (words.length > 1 && value.length > 3) {
       dispatch(setFormError(''))
     } else if (value.length < 3) {
       dispatch(setFormError('Nome menor que 3 caracteres'))
+    } else if (words.length < 2) {
+      dispatch(setFormError('Informe o nome completo'))
     } else {
       dispatch(setFormError('Valor inválido'))
     }
@@ -184,7 +188,6 @@ const Details = () => {
           />
         </S.AvatarWrapper>
         <S.Name
-          maxLength={12}
           disabled={canEdit}
           placeholder="Digite o nome"
           value={createdContactName}
