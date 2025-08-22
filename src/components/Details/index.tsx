@@ -14,7 +14,12 @@ import { Label, LabelBlack, Title } from '../../styles'
 
 import { RootReducer } from '../../store'
 
-import { newContact, setFormError } from '../../store/reducers/contacts'
+import {
+  editContact,
+  newContact,
+  setFormError,
+  setViewContact
+} from '../../store/reducers/contacts'
 
 const Details = () => {
   const dispatch = useDispatch()
@@ -81,15 +86,24 @@ const Details = () => {
   const resolvedAvatarImage = avatarImage ? avatarImage : viewContact?.avatar
 
   const validateAvatar = (file: File | undefined) => {
-    setIsEditing(true)
     if (!file) return
 
-    if (avatarImage) {
-      URL.revokeObjectURL(avatarImage)
-    }
+    setIsEditing(true)
+
+    if (avatarImage) URL.revokeObjectURL(avatarImage)
 
     const avatarUrl = URL.createObjectURL(file)
     setAvatarImage(avatarUrl)
+
+    if (viewContact) {
+      dispatch(
+        setViewContact({
+          ...viewContact,
+          avatar: avatarUrl
+        })
+      )
+      dispatch(editContact(viewContact.id))
+    }
   }
 
   const validateName = (value: string) => {
@@ -98,26 +112,33 @@ const Details = () => {
 
     const words = value.split(' ')
 
-    if (words.length > 1 && value.length > 3) {
-      dispatch(setFormError(''))
+    if ('0123456789'.includes(value[0])) {
+      dispatch(setFormError('O nome não pode começar com um número'))
     } else if (value.length < 3) {
       dispatch(setFormError('Nome menor que 3 caracteres'))
     } else if (words.length < 2) {
       dispatch(setFormError('Informe o nome completo'))
+    } else if (words.includes('')) {
+      dispatch(setFormError('Sobrenome inválido'))
     } else {
-      dispatch(setFormError('Valor inválido'))
+      dispatch(setFormError(''))
     }
   }
 
   const validateNumber = (value: string) => {
     setIsEditing(true)
     setCreatedContactNumber(value)
-    if (value.length === 11) {
-      dispatch(setFormError(''))
+
+    const numbers = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']
+
+    const validValue = value.split('').some((char) => !numbers.includes(char))
+
+    if (validValue || value.length < 11) {
+      dispatch(setFormError('Numero de telefone invalido'))
     } else if (value.length === 9) {
       dispatch(setFormError('Digite o DDD'))
     } else {
-      dispatch(setFormError('Valor inválido'))
+      dispatch(setFormError(''))
     }
   }
 

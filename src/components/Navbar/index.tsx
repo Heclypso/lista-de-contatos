@@ -1,5 +1,4 @@
 import { useNavigate } from 'react-router-dom'
-import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 
 import * as S from './styles'
@@ -23,70 +22,27 @@ type Props = {
 
 const Navbar = ({ onDetails }: Props) => {
   const navigate = useNavigate()
-  const { favoritedState } = useSelector((state: RootReducer) => state.contacts)
   const dispatch = useDispatch()
   const currentContact = useSelector(
     (state: RootReducer) => state.contacts.viewContact
   )
 
-  const currentContactFavorited = currentContact?.favorited
+  const { favoritedState } = useSelector((state: RootReducer) => state.contacts)
 
-  useEffect(() => {
-    if (currentContactFavorited === true) {
-      dispatch(A.setFavoritedState(currentContactFavorited))
-    }
-  }, [currentContactFavorited, dispatch])
-
-  function contactWasFavorited() {
+  const deleteContactFunction = () => {
     if (!currentContact) return
-    const { id, avatar, name, number, email, favorited, lastCall } =
-      currentContact
+    const { id } = currentContact
 
-    console.log(favoritedState)
-
-    if (favoritedState === true) {
-      dispatch(
-        A.favoriteContact({
-          id: id,
-          avatar: avatar,
-          name: name,
-          email: email,
-          number: number,
-          favorited: favorited,
-          lastCall: lastCall
-        })
-      )
-    } else {
-      dispatch(
-        A.removeFavorited({
-          id: id,
-          avatar: avatar,
-          name: name,
-          email: email,
-          number: number,
-          favorited: favorited,
-          lastCall: lastCall
-        })
-      )
-    }
+    dispatch(A.setFavoritedState(false))
+    dispatch(A.removeViewContact())
+    dispatch(A.deleteContact(id))
   }
 
-  function deleteContactFunction() {
+  const checkContact = () => {
     if (!currentContact) return
-    const { id, avatar, name, number, email, favorited, lastCall } =
-      currentContact
+    const { id } = currentContact
 
-    dispatch(
-      A.deleteContact({
-        id: id,
-        avatar: avatar,
-        name: name,
-        number: number,
-        email: email,
-        favorited: favorited,
-        lastCall: lastCall
-      })
-    )
+    dispatch(A.editContact(id))
   }
 
   const canEdit = useSelector(
@@ -101,11 +57,11 @@ const Navbar = ({ onDetails }: Props) => {
         <>
           <S.OptionIcon
             onClick={() => {
-              navigate('/')
-              dispatch(A.removeViewContact())
-              contactWasFavorited()
-              newContact != null ? dispatch(A.addToContacts()) : ''
+              checkContact()
+              newContact ? dispatch(A.addToContacts()) : ''
               canEdit ? dispatch(A.changeCanEdit()) : ''
+              dispatch(A.removeViewContact())
+              navigate('/')
             }}
             src={returnIcon}
             alt="Ícone de navegar para a página anterior"
@@ -121,6 +77,7 @@ const Navbar = ({ onDetails }: Props) => {
             <S.OptionIcon
               onClick={() => {
                 dispatch(A.setFavoritedState(!favoritedState))
+                checkContact()
               }}
               src={favoritedState ? favoritedIcon : favoriteIcon}
               alt="Ícone de favoritar contato"

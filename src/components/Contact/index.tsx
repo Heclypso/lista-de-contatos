@@ -101,7 +101,10 @@ const Contact = ({
         $infoExpanded={borderVisibleState}
         $borderBottomVisible={borderVisibleState}
       >
-        <S.Avatar src={avatar} alt="Imagem do avatar do contato" />
+        <S.Avatar
+          src={avatar ? avatar : 'https://placehold.co/120x120'}
+          alt="Imagem do avatar do contato"
+        />
         <S.TextContainer>
           <Title>{name}</Title>
           {currentPage === 'recent' && (

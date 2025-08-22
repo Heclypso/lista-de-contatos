@@ -61,7 +61,9 @@ const ContactsList = () => {
     })
   }
 
-  const WordCategorys = contactsToUse.map((contact) => contact.name.charAt(0))
+  const WordCategorys = contactsToUse.map((contact) =>
+    contact.name.charAt(0).toUpperCase()
+  )
   const WordCaterysSet: Set<string> = new Set([...WordCategorys])
 
   const WordsCategoryArray = [...WordCaterysSet]

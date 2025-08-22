@@ -8,8 +8,8 @@ type ContactState = {
   canEditContact: boolean
   newContact: ContactClass | null
   searchValue: string
-  favoritedState: boolean
   formError: string
+  favoritedState: boolean
 }
 
 const initialState: ContactState = {
@@ -19,8 +19,8 @@ const initialState: ContactState = {
   canEditContact: false,
   newContact: null,
   searchValue: '',
-  favoritedState: false,
-  formError: ''
+  formError: '',
+  favoritedState: false
 }
 
 const contactSlice = createSlice({
@@ -48,28 +48,38 @@ const contactSlice = createSlice({
     changeOnPage: (state, action: PayloadAction<string>) => {
       state.currentPage = action.payload
     },
-    favoriteContact: (state, action: PayloadAction<ContactClass>) => {
+    deleteContact: (state, action: PayloadAction<ContactClass['id']>) => {
       const contactIndex = state.contacts.findIndex(
-        (c) => c.id === action.payload.id
-      )
-      if (contactIndex >= 0) {
-        state.contacts[contactIndex].favorited = true
-      }
-    },
-    removeFavorited: (state, action: PayloadAction<ContactClass>) => {
-      const contactIndex = state.contacts.findIndex(
-        (c) => c.id === action.payload.id
-      )
-      if (contactIndex >= 0) {
-        state.contacts[contactIndex].favorited = false
-      }
-    },
-    deleteContact: (state, action: PayloadAction<ContactClass>) => {
-      const contactIndex = state.contacts.findIndex(
-        (c) => c.id === action.payload.id
+        (c) => c.id === action.payload
       )
       if (contactIndex >= 0) {
         state.contacts.splice(contactIndex, 1)
+      }
+    },
+    editContact: (state, action: PayloadAction<ContactClass['id']>) => {
+      const contactIndex = state.contacts.findIndex(
+        (c) => c.id === action.payload
+      )
+
+      const currentContactInfos = state.viewContact
+      const storedContactInfos = state.contacts[contactIndex]
+
+      if (!storedContactInfos || !currentContactInfos) return
+
+      if (
+        storedContactInfos.avatar != currentContactInfos.avatar ||
+        storedContactInfos.name != currentContactInfos.name ||
+        storedContactInfos.number != currentContactInfos.number ||
+        storedContactInfos.email != currentContactInfos.email ||
+        state.favoritedState != storedContactInfos.favorited
+      ) {
+        state.contacts.splice(contactIndex, 1)
+
+        storedContactInfos.avatar = currentContactInfos.avatar
+        storedContactInfos.name = currentContactInfos.name
+        storedContactInfos.number = currentContactInfos.number
+        storedContactInfos.email = currentContactInfos.email
+        storedContactInfos.favorited = state.favoritedState
       }
     },
     changeCanEdit: (state) => {
@@ -86,11 +96,11 @@ const contactSlice = createSlice({
         state.contacts[contactIndex].lastCall = action.payload.lastCall
       }
     },
-    setFavoritedState: (state, action: PayloadAction<boolean>) => {
-      state.favoritedState = action.payload
-    },
     setFormError: (state, action: PayloadAction<string>) => {
       state.formError = action.payload
+    },
+    setFavoritedState: (state, action: PayloadAction<boolean>) => {
+      state.favoritedState = action.payload
     }
   }
 })
@@ -100,14 +110,13 @@ export const {
   setViewContact,
   removeViewContact,
   changeOnPage,
-  favoriteContact,
-  removeFavorited,
   deleteContact,
+  editContact,
   changeCanEdit,
   newContact,
   setSearchValue,
   setLastCall,
-  setFavoritedState,
-  setFormError
+  setFormError,
+  setFavoritedState
 } = contactSlice.actions
 export default contactSlice.reducer
