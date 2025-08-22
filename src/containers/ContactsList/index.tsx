@@ -53,10 +53,13 @@ const ContactsList = () => {
       .sort((a, b) => (b.lastCall ?? 0) - (a.lastCall ?? 0))
   else if (onContactPage()) contactsToUse = filteredContacts
 
-  if (searchValue)
-    contactsToUse = contacts.filter((c) =>
-      c.name.toLocaleLowerCase().includes(searchValue)
-    )
+  if (searchValue) {
+    contactsToUse = [...filteredContacts].filter((c) => {
+      const name = c.name.toLowerCase().split(' ')
+
+      return name.some((name) => name.includes(searchValue.toLowerCase()))
+    })
+  }
 
   const WordCategorys = contactsToUse.map((contact) => contact.name.charAt(0))
   const WordCaterysSet: Set<string> = new Set([...WordCategorys])
@@ -78,7 +81,7 @@ const ContactsList = () => {
         <TextContainer>
           <Title>Não existem chamadas recentes.</Title>
         </TextContainer>
-      ) : searchValue.length > 0 ? (
+      ) : searchValue.length > 0 && contactsToUse.length === 0 ? (
         <TextContainer>
           <Title>Nenhum contato corresponde à pesquisa</Title>
         </TextContainer>
