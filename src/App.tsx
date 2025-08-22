@@ -1,5 +1,6 @@
 import { Provider } from 'react-redux'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
+
 import { GlobalStyle } from './styles'
 import Contacts from './pages/Contacts'
 import Favorites from './pages/Favorites'

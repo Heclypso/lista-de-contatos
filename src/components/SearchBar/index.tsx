@@ -1,6 +1,7 @@
+import { useDispatch } from 'react-redux'
+
 import { Search, SearchIcon, SearchWrapper } from './styles'
 import searchIcon from '../../icons/search_icon.svg'
-import { useDispatch } from 'react-redux'
 import { setSearchValue } from '../../store/reducers/contacts'
 
 const SearchBar = () => {

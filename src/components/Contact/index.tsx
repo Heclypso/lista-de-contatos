@@ -1,7 +1,8 @@
-import * as S from './styles'
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
+
+import * as S from './styles'
 
 import icon from '../../icons/call_icon.svg'
 import { LabelBig, Title } from '../../styles'
@@ -36,7 +37,7 @@ const Contact = ({
   const dispatch = useDispatch()
   const { currentPage } = useSelector((state: RootReducer) => state.contacts)
 
-  function getLastCallTime() {
+  const getLastCallTime = () => {
     const date = new Date()
     const seconds = date.getSeconds()
     const minutes = date.getMinutes()
@@ -45,13 +46,46 @@ const Contact = ({
     return lastCall
   }
 
-  function formatLastCall(lastcall: number) {
+  const formatLastCall = (lastcall: number) => {
     const string = lastcall.toString()
 
     const hours = string.slice(0, 2)
     const minutes = string.slice(2, 4)
 
     return `${hours}:${minutes}`
+  }
+
+  const setContactInfos = (
+    id: number,
+    avatar: string,
+    name: string,
+    number: string,
+    email: string,
+    favorited: boolean
+  ) => {
+    dispatch(
+      setLastCall({
+        id,
+        avatar,
+        name,
+        number,
+        email,
+        favorited,
+        lastCall: getLastCallTime()
+      })
+    )
+    dispatch(
+      setViewContact({
+        id,
+        avatar,
+        name,
+        number,
+        email,
+        favorited,
+        lastCall
+      })
+    )
+    navigate('/call')
   }
 
   return (
@@ -76,31 +110,9 @@ const Contact = ({
         </S.TextContainer>
         {currentPage === 'contact' && infoExpandedState === false && (
           <S.CallIcon
-            onClick={() => {
-              dispatch(
-                setLastCall({
-                  id: id,
-                  avatar: avatar,
-                  name: name,
-                  number: number,
-                  email: email,
-                  favorited: favorited,
-                  lastCall: getLastCallTime()
-                })
-              )
-              dispatch(
-                setViewContact({
-                  id,
-                  avatar,
-                  name,
-                  number,
-                  email,
-                  favorited,
-                  lastCall
-                })
-              )
-              navigate('/call')
-            }}
+            onClick={() =>
+              setContactInfos(id, avatar, name, number, email, favorited)
+            }
             src={icon}
             alt="Ícone de iniciar chamada"
           />
@@ -119,50 +131,18 @@ const Contact = ({
           <S.ContactButtonsWrapper>
             <S.ContactButton
               onClick={() => {
-                navigate('/contact-details')
                 infoExpandedState &&
                   !borderVisibleState &&
-                  dispatch(
-                    setViewContact({
-                      id,
-                      avatar,
-                      name,
-                      number,
-                      email,
-                      favorited,
-                      lastCall
-                    })
-                  )
+                  setContactInfos(id, avatar, name, number, email, favorited)
+                navigate('/contact-details')
               }}
             >
               Ver
             </S.ContactButton>
             <S.ContactButton
-              onClick={() => {
-                dispatch(
-                  setLastCall({
-                    id: id,
-                    avatar: avatar,
-                    name: name,
-                    number: number,
-                    email: email,
-                    favorited: favorited,
-                    lastCall: getLastCallTime()
-                  })
-                )
-                dispatch(
-                  setViewContact({
-                    id,
-                    avatar,
-                    name,
-                    number,
-                    email,
-                    favorited,
-                    lastCall
-                  })
-                )
-                navigate('/call')
-              }}
+              onClick={() =>
+                setContactInfos(id, avatar, name, number, email, favorited)
+              }
             >
               Chamar
             </S.ContactButton>

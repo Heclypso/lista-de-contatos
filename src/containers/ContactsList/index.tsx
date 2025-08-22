@@ -1,5 +1,6 @@
 import { useSelector } from 'react-redux'
 import { useEffect, useState } from 'react'
+
 import Contact from '../../components/Contact'
 import CreateNewContact from '../../components/CreateNewContact'
 import SearchBar from '../../components/SearchBar'

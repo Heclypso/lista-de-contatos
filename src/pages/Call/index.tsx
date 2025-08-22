@@ -1,4 +1,5 @@
 import { useSelector } from 'react-redux'
+import { useNavigate } from 'react-router-dom'
 
 import * as S from '../../components/Details/styles'
 
@@ -11,6 +12,7 @@ import {
   CallOptionText,
   CallText
 } from './styles'
+
 import { RootReducer } from '../../store'
 
 import callPlusIcon from '../../icons/call_plus_icon.svg'
@@ -21,7 +23,6 @@ import microphoneIcon from '../../icons/microphone_icon.svg'
 import keyboardIcon from '../../icons/keyboard_icon.svg'
 
 import turnOffCall from '../../icons/turn_off_icon.svg'
-import { useNavigate } from 'react-router-dom'
 
 const Call = () => {
   const currentContact = useSelector(

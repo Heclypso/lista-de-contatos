@@ -1,4 +1,7 @@
+import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
+import { useNavigate } from 'react-router-dom'
+
 import * as S from './styles'
 
 import phoneIcon from '../../icons/phone_icon.svg'
@@ -10,34 +13,30 @@ import addIcon from '../../icons/plus_icon.svg'
 import { Label, LabelBlack, Title } from '../../styles'
 
 import { RootReducer } from '../../store'
-import { useEffect, useState } from 'react'
 
-import {
-  newContact,
-  setFormError,
-  setViewContact
-} from '../../store/reducers/contacts'
-import { useNavigate } from 'react-router-dom'
+import { newContact, setFormError } from '../../store/reducers/contacts'
 
 const Details = () => {
-  const { viewContact } = useSelector((state: RootReducer) => state.contacts)
+  const dispatch = useDispatch()
+  const navigate = useNavigate()
+
+  const { viewContact, favoritedState, formError } = useSelector(
+    (state: RootReducer) => state.contacts
+  )
+
+  const dinamicId = useSelector(
+    (state: RootReducer) => state.contacts.contacts.length + 1
+  )
+
   const canEdit = useSelector(
     (state: RootReducer) => !state.contacts.canEditContact
   )
-
-  const { favoritedState } = useSelector((state: RootReducer) => state.contacts)
-  const { formError } = useSelector((state: RootReducer) => state.contacts)
-
   const [isEditing, setIsEditing] = useState(false)
+
   const [avatarImage, setAvatarImage] = useState('')
   const [createdContactName, setCreatedContactName] = useState('')
   const [createdContactNumber, setCreatedContactNumber] = useState('')
   const [createdContactEmail, setCreatedContactEmail] = useState('')
-  const dispatch = useDispatch()
-  const navigate = useNavigate()
-  const dinamicId = useSelector(
-    (state: RootReducer) => state.contacts.contacts.length + 1
-  )
 
   useEffect(() => {
     if (viewContact && !isEditing) {
@@ -81,6 +80,99 @@ const Details = () => {
 
   const resolvedAvatarImage = avatarImage ? avatarImage : viewContact?.avatar
 
+  const validateAvatar = (file: File | undefined) => {
+    setIsEditing(true)
+    if (!file) return
+
+    if (avatarImage) {
+      URL.revokeObjectURL(avatarImage)
+    }
+
+    const avatarUrl = URL.createObjectURL(file)
+    setAvatarImage(avatarUrl)
+  }
+
+  const validateName = (value: string) => {
+    setIsEditing(true)
+    setCreatedContactName(value)
+
+    if (value.length > 3 && value.length < 12) {
+      dispatch(setFormError(''))
+    } else if (value.length < 3) {
+      dispatch(setFormError('Nome menor que 3 caracteres'))
+    } else {
+      dispatch(setFormError('Valor inválido'))
+    }
+  }
+
+  const validateNumber = (value: string) => {
+    setIsEditing(true)
+    setCreatedContactNumber(value)
+    if (value.length === 11) {
+      dispatch(setFormError(''))
+    } else if (value.length === 9) {
+      dispatch(setFormError('Digite o DDD'))
+    } else {
+      dispatch(setFormError('Valor inválido'))
+    }
+  }
+
+  const validateEmail = (value: string) => {
+    setIsEditing(true)
+    setCreatedContactEmail(value)
+
+    const domains = [
+      '@gmail.com',
+      '@yahoo.com',
+      '@yahoo.com.br',
+      '@hotmail.com',
+      '@outlook.com',
+      '@live.com',
+      '@aol.com',
+      '@icloud.com',
+      '@me.com',
+      '@mac.com',
+      '@uol.com.br',
+      '@bol.com.br',
+      '@terra.com.br',
+      '@globo.com',
+      '@ig.com.br',
+      '@r7.com',
+      '@edu.br',
+      '@protonmail.com',
+      '@zoho.com',
+      '@mail.com'
+    ]
+
+    const endWithDomains = [
+      '.com',
+      '.org',
+      '.net',
+      '.edu',
+      '.gov',
+      '.info',
+      '.br',
+      '.com.br',
+      '.edu.br',
+      '.us',
+      '.uk',
+      '.ca',
+      '.de',
+      '@gmail.com'
+    ]
+
+    if (
+      value.length < 64 &&
+      value.length > 1 &&
+      endWithDomains.some((domain) => value.endsWith(domain)) &&
+      domains.some((domain) => value.includes(domain))
+    ) {
+      dispatch(setFormError(''))
+    } else {
+      dispatch(setFormError('Valor inválido'))
+    }
+  }
+
   return (
     <>
       <S.DetailsWrapper>
@@ -88,18 +180,7 @@ const Details = () => {
           <S.Avatar
             disabled={canEdit}
             type="file"
-            onChange={(e) => {
-              setIsEditing(true)
-              const file = e.target.files?.[0]
-              if (!file) return
-
-              if (avatarImage) {
-                URL.revokeObjectURL(avatarImage)
-              }
-
-              const avatarUrl = URL.createObjectURL(file)
-              setAvatarImage(avatarUrl)
-            }}
+            onChange={(e) => validateAvatar(e.target.files?.[0])}
           />
         </S.AvatarWrapper>
         <S.Name
@@ -107,19 +188,7 @@ const Details = () => {
           disabled={canEdit}
           placeholder="Digite o nome"
           value={createdContactName}
-          onChange={(e) => {
-            const value = e.target.value
-            setIsEditing(true)
-            setCreatedContactName(value)
-
-            if (value.length > 3 && value.length < 12) {
-              dispatch(setFormError(''))
-            } else if (value.length < 3) {
-              dispatch(setFormError('Nome menor que 3 caracteres'))
-            } else {
-              dispatch(setFormError('Valor inválido'))
-            }
-          }}
+          onChange={(e) => validateName(e.target.value)}
         />
         <S.OptionsContainer>
           <S.OptionWrapper onClick={() => navigate('/call')}>
@@ -147,19 +216,7 @@ const Details = () => {
                 disabled={canEdit}
                 placeholder="Telefone do contato"
                 value={createdContactNumber}
-                onChange={(e) => {
-                  setIsEditing(true)
-                  const value = e.target.value
-
-                  setCreatedContactNumber(value)
-                  if (value.length === 11) {
-                    dispatch(setFormError(''))
-                  } else if (value.length === 9) {
-                    dispatch(setFormError('Digite o DDD'))
-                  } else {
-                    dispatch(setFormError('Valor inválido'))
-                  }
-                }}
+                onChange={(e) => validateNumber(e.target.value)}
               />
               <Label>Telefone</Label>
             </S.DataTextWrapper>
@@ -171,63 +228,7 @@ const Details = () => {
                 disabled={canEdit}
                 placeholder="Email do contato"
                 value={createdContactEmail}
-                onChange={(e) => {
-                  setIsEditing(true)
-
-                  const value = e.target.value
-                  setCreatedContactEmail(value)
-
-                  const endWithDomains = [
-                    '.com',
-                    '.org',
-                    '.net',
-                    '.edu',
-                    '.gov',
-                    '.info',
-                    '.br',
-                    '.com.br',
-                    '.edu.br',
-                    '.us',
-                    '.uk',
-                    '.ca',
-                    '.de',
-                    '@gmail.com'
-                  ]
-
-                  const domains = [
-                    '@gmail.com',
-                    '@yahoo.com',
-                    '@yahoo.com.br',
-                    '@hotmail.com',
-                    '@outlook.com',
-                    '@live.com',
-                    '@aol.com',
-                    '@icloud.com',
-                    '@me.com',
-                    '@mac.com',
-                    '@uol.com.br',
-                    '@bol.com.br',
-                    '@terra.com.br',
-                    '@globo.com',
-                    '@ig.com.br',
-                    '@r7.com',
-                    '@edu.br',
-                    '@protonmail.com',
-                    '@zoho.com',
-                    '@mail.com'
-                  ]
-
-                  if (
-                    value.length < 64 &&
-                    value.length > 1 &&
-                    endWithDomains.some((domain) => value.endsWith(domain)) &&
-                    domains.some((domain) => value.includes(domain))
-                  ) {
-                    dispatch(setFormError(''))
-                  } else {
-                    dispatch(setFormError('Valor inválido'))
-                  }
-                }}
+                onChange={(e) => validateEmail(e.target.value)}
               />
               <Label>Email</Label>
             </S.DataTextWrapper>
