@@ -14,34 +14,51 @@ import { Label, LabelBlack, Title } from '../../styles'
 
 import { RootReducer } from '../../store'
 
-import {
-  editContact,
-  newContact,
-  setFormError,
-  setViewContact
-} from '../../store/reducers/contacts'
+import * as A from '../../store/reducers/contacts'
+import Contact from '../../models/Contact'
 
 const Details = () => {
   const dispatch = useDispatch()
   const navigate = useNavigate()
 
-  const { viewContact, favoritedState, formError } = useSelector(
+  const { viewContact, formError } = useSelector(
     (state: RootReducer) => state.contacts
   )
 
-  const dinamicId = useSelector(
-    (state: RootReducer) => state.contacts.contacts.length + 1
-  )
+  // const viewContactId = useSelector(
+  //   (state: RootReducer) => state.contacts.viewContact?.id
+  // )
+
+  // const viewContactFavorited = useSelector((state: RootReducer) =>
+  //   state.contacts.viewContact ? state.contacts.viewContact.favorited : false
+  // )
+
+  // const viewContactLastCall = useSelector(
+  //   (state: RootReducer) => state.contacts.viewContact?.lastCall ?? 0
+  // )
 
   const canEdit = useSelector(
     (state: RootReducer) => !state.contacts.canEditContact
   )
+
   const [isEditing, setIsEditing] = useState(false)
 
   const [avatarImage, setAvatarImage] = useState('')
   const [createdContactName, setCreatedContactName] = useState('')
   const [createdContactNumber, setCreatedContactNumber] = useState('')
   const [createdContactEmail, setCreatedContactEmail] = useState('')
+
+  const localContactId = viewContact?.id ?? Date.now()
+
+  const [createdContact, setCreatedContact] = useState<Contact>({
+    id: localContactId,
+    avatar: '',
+    name: '',
+    number: '',
+    email: '',
+    favorited: false,
+    lastCall: 0
+  })
 
   useEffect(() => {
     if (viewContact && !isEditing) {
@@ -52,36 +69,19 @@ const Details = () => {
     }
   }, [viewContact, isEditing])
 
-  useEffect(() => {
-    if (
-      isEditing &&
-      createdContactName &&
-      createdContactNumber &&
-      createdContactEmail !== ''
-    ) {
-      dispatch(
-        newContact({
-          id: dinamicId,
-          avatar: avatarImage,
-          name: createdContactName,
-          number: createdContactNumber,
-          email: createdContactEmail,
-          favorited: favoritedState,
-          lastCall: 0
-        })
-      )
-    }
-  }, [
-    createdContactName,
-    createdContactNumber,
-    createdContactEmail,
-    avatarImage,
-    dispatch,
-    dinamicId,
-    isEditing,
-    viewContact,
-    favoritedState
-  ])
+  // useEffect(() => {
+  //   dispatch(
+  //     A.setViewContact({
+  //       id: viewContactId || 0,
+  //       avatar: avatarImage,
+  //       name: createdContactName,
+  //       number: createdContactNumber,
+  //       email: createdContactEmail,
+  //       favorited: viewContactFavorited,
+  //       lastCall: viewContactLastCall
+  //     })
+  //   )
+  // })
 
   const resolvedAvatarImage = avatarImage ? avatarImage : viewContact?.avatar
 
@@ -94,57 +94,87 @@ const Details = () => {
 
     const avatarUrl = URL.createObjectURL(file)
     setAvatarImage(avatarUrl)
+    setCreatedContact({ ...createdContact, avatar: avatarUrl })
 
     if (viewContact) {
       dispatch(
-        setViewContact({
+        A.setViewContact({
           ...viewContact,
           avatar: avatarUrl
         })
       )
-      dispatch(editContact(viewContact.id))
+      dispatch(A.editContact(viewContact))
+    }
+    if (avatarImage) {
+      dispatch(
+        A.setNewContact({
+          ...createdContact,
+          avatar: avatarImage
+        })
+      )
     }
   }
 
   const validateName = (value: string) => {
     setIsEditing(true)
     setCreatedContactName(value)
+    setCreatedContact({ ...createdContact, name: value })
+    dispatch(
+      A.setNewContact({
+        ...createdContact,
+        name: value
+      })
+    )
 
     const words = value.split(' ')
 
     if ('0123456789'.includes(value[0])) {
-      dispatch(setFormError('O nome não pode começar com um número'))
+      dispatch(A.setFormError('O nome não pode começar com um número'))
     } else if (value.length < 3) {
-      dispatch(setFormError('Nome menor que 3 caracteres'))
+      dispatch(A.setFormError('Nome menor que 3 caracteres'))
     } else if (words.length < 2) {
-      dispatch(setFormError('Informe o nome completo'))
+      dispatch(A.setFormError('Informe o nome completo'))
     } else if (words.includes('')) {
-      dispatch(setFormError('Sobrenome inválido'))
+      dispatch(A.setFormError('Sobrenome inválido'))
     } else {
-      dispatch(setFormError(''))
+      dispatch(A.setFormError(''))
     }
   }
 
   const validateNumber = (value: string) => {
     setIsEditing(true)
     setCreatedContactNumber(value)
+    setCreatedContact({ ...createdContact, number: value })
+    dispatch(
+      A.setNewContact({
+        ...createdContact,
+        number: value
+      })
+    )
 
     const numbers = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']
 
     const validValue = value.split('').some((char) => !numbers.includes(char))
 
     if (validValue || value.length < 11) {
-      dispatch(setFormError('Numero de telefone invalido'))
+      dispatch(A.setFormError('Numero de telefone invalido'))
     } else if (value.length === 9) {
-      dispatch(setFormError('Digite o DDD'))
+      dispatch(A.setFormError('Digite o DDD'))
     } else {
-      dispatch(setFormError(''))
+      dispatch(A.setFormError(''))
     }
   }
 
   const validateEmail = (value: string) => {
     setIsEditing(true)
     setCreatedContactEmail(value)
+    setCreatedContact({ ...createdContact, email: value })
+    dispatch(
+      A.setNewContact({
+        ...createdContact,
+        email: value
+      })
+    )
 
     const domains = [
       '@gmail.com',
@@ -192,9 +222,9 @@ const Details = () => {
       endWithDomains.some((domain) => value.endsWith(domain)) &&
       domains.some((domain) => value.includes(domain))
     ) {
-      dispatch(setFormError(''))
+      dispatch(A.setFormError(''))
     } else {
-      dispatch(setFormError('Valor inválido'))
+      dispatch(A.setFormError('Valor inválido'))
     }
   }
 

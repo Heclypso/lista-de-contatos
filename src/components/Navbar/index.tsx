@@ -23,26 +23,11 @@ type Props = {
 const Navbar = ({ onDetails }: Props) => {
   const navigate = useNavigate()
   const dispatch = useDispatch()
-  const currentContact = useSelector(
-    (state: RootReducer) => state.contacts.viewContact
-  )
 
-  const { favoritedState } = useSelector((state: RootReducer) => state.contacts)
+  const { viewContact } = useSelector((state: RootReducer) => state.contacts)
 
   const deleteContactFunction = () => {
-    if (!currentContact) return
-    const { id } = currentContact
-
-    dispatch(A.setFavoritedState(false))
     dispatch(A.removeViewContact())
-    dispatch(A.deleteContact(id))
-  }
-
-  const checkContact = () => {
-    if (!currentContact) return
-    const { id } = currentContact
-
-    dispatch(A.editContact(id))
   }
 
   const canEdit = useSelector(
@@ -51,16 +36,35 @@ const Navbar = ({ onDetails }: Props) => {
 
   const { newContact } = useSelector((state: RootReducer) => state.contacts)
 
+  const newContactFavorited = useSelector(
+    (state: RootReducer) => state.contacts.newContactFavorited
+  )
+
+  const starIcon = viewContact
+    ? viewContact.favorited
+      ? favoritedIcon
+      : favoriteIcon
+    : newContactFavorited
+      ? favoritedIcon
+      : favoriteIcon
+
   return (
     <S.Nav $onDetails={onDetails}>
       {onDetails ? (
         <>
           <S.OptionIcon
             onClick={() => {
-              checkContact()
-              newContact ? dispatch(A.addToContacts()) : ''
+              if (viewContact) {
+                dispatch(
+                  A.editContact({
+                    ...viewContact
+                  })
+                )
+              }
+              newContact ? dispatch(A.addContact(newContact)) : ''
               canEdit ? dispatch(A.changeCanEdit()) : ''
               dispatch(A.removeViewContact())
+              dispatch(A.turnNewContactFavoritedFalse())
               navigate('/')
             }}
             src={returnIcon}
@@ -76,10 +80,19 @@ const Navbar = ({ onDetails }: Props) => {
             />
             <S.OptionIcon
               onClick={() => {
-                dispatch(A.setFavoritedState(!favoritedState))
-                checkContact()
+                if (viewContact) {
+                  dispatch(A.toggleFavorited())
+                  dispatch(
+                    A.editContact({
+                      ...viewContact,
+                      favorited: !viewContact.favorited
+                    })
+                  )
+                } else {
+                  dispatch(A.toggleNewContactFavorited())
+                }
               }}
-              src={favoritedState ? favoritedIcon : favoriteIcon}
+              src={starIcon}
               alt="Ícone de favoritar contato"
             />
             <S.DeleteIcon

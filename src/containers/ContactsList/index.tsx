@@ -35,7 +35,9 @@ const ContactsList = () => {
   useEffect(() => {
     const contactMap = new Map<string, ContactList>()
 
-    contacts.forEach((contact) => contactMap.set(contact.number, contact))
+    contacts.forEach((contact) =>
+      contactMap.set(contact.id as unknown as string, contact)
+    )
 
     const contactsArray = Array.from(contactMap.values())
     setContactArray(contactsArray)
@@ -65,8 +67,7 @@ const ContactsList = () => {
     contact.name.charAt(0).toUpperCase()
   )
   const WordCaterysSet: Set<string> = new Set([...WordCategorys])
-
-  const WordsCategoryArray = [...WordCaterysSet]
+  const WordsCategoryArray = [...WordCaterysSet].sort()
 
   return (
     <>

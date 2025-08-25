@@ -7,37 +7,44 @@ type ContactState = {
   currentPage: string
   canEditContact: boolean
   newContact: ContactClass | null
+  newContactFavorited: boolean
   searchValue: string
   formError: string
-  favoritedState: boolean
 }
 
 const initialState: ContactState = {
   contacts: [],
   viewContact: null,
   currentPage: 'contact',
-  canEditContact: false,
+  canEditContact: true,
   newContact: null,
   searchValue: '',
   formError: '',
-  favoritedState: false
+  newContactFavorited: false
 }
 
 const contactSlice = createSlice({
   name: 'contact',
   initialState,
   reducers: {
-    newContact: (state, action: PayloadAction<ContactClass>) => {
-      state.newContact = action.payload
-    },
-    addToContacts: (state) => {
-      if (!state.newContact) {
-        console.log('não existe novo contato')
-      } else {
-        if (!state.contacts.some((c) => c.name === state.newContact?.name)) {
-          state.contacts.push(state.newContact)
-        }
+    addContact: (state, action: PayloadAction<ContactClass>) => {
+      const exists = state.contacts.some((c) => c.id === action.payload.id)
+      if (!exists) {
+        state.contacts.push(action.payload)
+        state.newContact = action.payload
       }
+    },
+    setNewContact: (state, action: PayloadAction<ContactClass>) => {
+      const exists = state.contacts.some((c) => c.id === action.payload.id)
+      if (!exists) {
+        state.newContact = action.payload
+      }
+    },
+    toggleNewContactFavorited: (state) => {
+      state.newContactFavorited = !state.newContactFavorited
+    },
+    turnNewContactFavoritedFalse: (state) => {
+      state.newContactFavorited = false
     },
     setViewContact: (state, action: PayloadAction<ContactClass>) => {
       state.viewContact = action.payload
@@ -56,31 +63,18 @@ const contactSlice = createSlice({
         state.contacts.splice(contactIndex, 1)
       }
     },
-    editContact: (state, action: PayloadAction<ContactClass['id']>) => {
+    editContact: (state, action: PayloadAction<ContactClass>) => {
       const contactIndex = state.contacts.findIndex(
-        (c) => c.id === action.payload
+        (c) => c.id === action.payload.id
       )
+      if (contactIndex === -1) return
 
-      const currentContactInfos = state.viewContact
-      const storedContactInfos = state.contacts[contactIndex]
+      state.contacts[contactIndex] = action.payload
+    },
+    toggleFavorited: (state) => {
+      if (!state.viewContact) return
 
-      if (!storedContactInfos || !currentContactInfos) return
-
-      if (
-        storedContactInfos.avatar != currentContactInfos.avatar ||
-        storedContactInfos.name != currentContactInfos.name ||
-        storedContactInfos.number != currentContactInfos.number ||
-        storedContactInfos.email != currentContactInfos.email ||
-        state.favoritedState != storedContactInfos.favorited
-      ) {
-        state.contacts.splice(contactIndex, 1)
-
-        storedContactInfos.avatar = currentContactInfos.avatar
-        storedContactInfos.name = currentContactInfos.name
-        storedContactInfos.number = currentContactInfos.number
-        storedContactInfos.email = currentContactInfos.email
-        storedContactInfos.favorited = state.favoritedState
-      }
+      state.viewContact.favorited = !state.viewContact.favorited
     },
     changeCanEdit: (state) => {
       state.canEditContact = !state.canEditContact
@@ -98,25 +92,24 @@ const contactSlice = createSlice({
     },
     setFormError: (state, action: PayloadAction<string>) => {
       state.formError = action.payload
-    },
-    setFavoritedState: (state, action: PayloadAction<boolean>) => {
-      state.favoritedState = action.payload
     }
   }
 })
 
 export const {
-  addToContacts,
+  addContact,
   setViewContact,
   removeViewContact,
   changeOnPage,
   deleteContact,
   editContact,
   changeCanEdit,
-  newContact,
+  toggleNewContactFavorited,
+  turnNewContactFavoritedFalse,
   setSearchValue,
   setLastCall,
   setFormError,
-  setFavoritedState
+  toggleFavorited,
+  setNewContact
 } = contactSlice.actions
 export default contactSlice.reducer
