@@ -25,11 +25,16 @@ import keyboardIcon from '../../icons/keyboard_icon.svg'
 import turnOffCall from '../../icons/turn_off_icon.svg'
 
 const Call = () => {
-  const currentContact = useSelector(
-    (state: RootReducer) => state.contacts.viewContact
+  const navigate = useNavigate()
+  const { selectedContactId, contacts } = useSelector(
+    (state: RootReducer) => state.contacts
   )
 
-  const navigate = useNavigate()
+  const currentContact =
+    selectedContactId != null ? contacts[selectedContactId] : null
+
+  if (!currentContact) return null
+
   return (
     <CallContainer>
       <CallText>Chamando...</CallText>

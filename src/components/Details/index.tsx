@@ -18,28 +18,25 @@ import * as A from '../../store/reducers/contacts'
 import Contact from '../../models/Contact'
 
 const Details = () => {
-  const dispatch = useDispatch()
-  const navigate = useNavigate()
-
-  const { viewContact, formError } = useSelector(
+  const { selectedContactId, contacts } = useSelector(
     (state: RootReducer) => state.contacts
   )
 
-  // const viewContactId = useSelector(
-  //   (state: RootReducer) => state.contacts.viewContact?.id
-  // )
+  const currentContact =
+    selectedContactId != null ? contacts[selectedContactId] : null
 
-  // const viewContactFavorited = useSelector((state: RootReducer) =>
-  //   state.contacts.viewContact ? state.contacts.viewContact.favorited : false
-  // )
+  const dispatch = useDispatch()
+  const navigate = useNavigate()
 
-  // const viewContactLastCall = useSelector(
-  //   (state: RootReducer) => state.contacts.viewContact?.lastCall ?? 0
-  // )
+  const { formError } = useSelector((state: RootReducer) => state.contacts)
 
-  const canEdit = useSelector(
-    (state: RootReducer) => !state.contacts.canEditContact
-  )
+  const canEdit = useSelector((state: RootReducer) => {
+    if (currentContact === null) {
+      return state.contacts.canEditContact
+    } else {
+      return !state.contacts.canEditContact
+    }
+  })
 
   const [isEditing, setIsEditing] = useState(false)
 
@@ -48,10 +45,13 @@ const Details = () => {
   const [createdContactNumber, setCreatedContactNumber] = useState('')
   const [createdContactEmail, setCreatedContactEmail] = useState('')
 
-  const localContactId = viewContact?.id ?? Date.now()
+  const contactList = useSelector(
+    (state: RootReducer) => state.contacts.contacts
+  )
+  const createdContactId = contactList.length
 
   const [createdContact, setCreatedContact] = useState<Contact>({
-    id: localContactId,
+    id: createdContactId,
     avatar: '',
     name: '',
     number: '',
@@ -61,29 +61,15 @@ const Details = () => {
   })
 
   useEffect(() => {
-    if (viewContact && !isEditing) {
-      setCreatedContactName(viewContact.name)
-      setCreatedContactNumber(viewContact.number)
-      setCreatedContactEmail(viewContact.email)
-      setAvatarImage(viewContact.avatar)
+    if (currentContact && !isEditing) {
+      setCreatedContactName(currentContact.name)
+      setCreatedContactNumber(currentContact.number)
+      setCreatedContactEmail(currentContact.email)
+      setAvatarImage(currentContact.avatar)
     }
-  }, [viewContact, isEditing])
+  }, [currentContact, isEditing])
 
-  // useEffect(() => {
-  //   dispatch(
-  //     A.setViewContact({
-  //       id: viewContactId || 0,
-  //       avatar: avatarImage,
-  //       name: createdContactName,
-  //       number: createdContactNumber,
-  //       email: createdContactEmail,
-  //       favorited: viewContactFavorited,
-  //       lastCall: viewContactLastCall
-  //     })
-  //   )
-  // })
-
-  const resolvedAvatarImage = avatarImage ? avatarImage : viewContact?.avatar
+  const resolvedAvatarImage = avatarImage ? avatarImage : currentContact?.avatar
 
   const validateAvatar = (file: File | undefined) => {
     if (!file) return
@@ -96,14 +82,8 @@ const Details = () => {
     setAvatarImage(avatarUrl)
     setCreatedContact({ ...createdContact, avatar: avatarUrl })
 
-    if (viewContact) {
-      dispatch(
-        A.setViewContact({
-          ...viewContact,
-          avatar: avatarUrl
-        })
-      )
-      dispatch(A.editContact(viewContact))
+    if (currentContact) {
+      dispatch(A.editContact(currentContact))
     }
     if (avatarImage) {
       dispatch(
@@ -233,13 +213,13 @@ const Details = () => {
       <S.DetailsWrapper>
         <S.AvatarWrapper $avatarImage={resolvedAvatarImage}>
           <S.Avatar
-            disabled={canEdit}
+            disabled={currentContact ? canEdit : false}
             type="file"
             onChange={(e) => validateAvatar(e.target.files?.[0])}
           />
         </S.AvatarWrapper>
         <S.Name
-          disabled={canEdit}
+          disabled={currentContact ? canEdit : false}
           placeholder="Digite o nome"
           value={createdContactName}
           onChange={(e) => validateName(e.target.value)}
@@ -267,7 +247,7 @@ const Details = () => {
             <S.DataTextWrapper>
               <S.DataText
                 maxLength={11}
-                disabled={canEdit}
+                disabled={currentContact ? canEdit : false}
                 placeholder="Telefone do contato"
                 value={createdContactNumber}
                 onChange={(e) => validateNumber(e.target.value)}
@@ -279,7 +259,7 @@ const Details = () => {
             <S.OptionIcon src={mailIcon} />
             <S.DataTextWrapper>
               <S.DataText
-                disabled={canEdit}
+                disabled={currentContact ? canEdit : false}
                 placeholder="Email do contato"
                 value={createdContactEmail}
                 onChange={(e) => validateEmail(e.target.value)}

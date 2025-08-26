@@ -24,10 +24,15 @@ const Navbar = ({ onDetails }: Props) => {
   const navigate = useNavigate()
   const dispatch = useDispatch()
 
-  const { viewContact } = useSelector((state: RootReducer) => state.contacts)
+  const { selectedContactId, contacts } = useSelector(
+    (state: RootReducer) => state.contacts
+  )
+
+  const currentContact =
+    selectedContactId != null ? contacts[selectedContactId] : null
 
   const deleteContactFunction = () => {
-    dispatch(A.removeViewContact())
+    console.log('Delete contact function')
   }
 
   const canEdit = useSelector(
@@ -40,13 +45,17 @@ const Navbar = ({ onDetails }: Props) => {
     (state: RootReducer) => state.contacts.newContactFavorited
   )
 
-  const starIcon = viewContact
-    ? viewContact.favorited
+  const starIcon = currentContact
+    ? currentContact.favorited
       ? favoritedIcon
       : favoriteIcon
     : newContactFavorited
       ? favoritedIcon
       : favoriteIcon
+
+  if (currentContact) {
+    console.log('Está favoritado?', currentContact.favorited)
+  }
 
   return (
     <S.Nav $onDetails={onDetails}>
@@ -54,16 +63,16 @@ const Navbar = ({ onDetails }: Props) => {
         <>
           <S.OptionIcon
             onClick={() => {
-              if (viewContact) {
+              if (currentContact) {
                 dispatch(
                   A.editContact({
-                    ...viewContact
+                    ...currentContact
                   })
                 )
               }
               newContact ? dispatch(A.addContact(newContact)) : ''
-              canEdit ? dispatch(A.changeCanEdit()) : ''
-              dispatch(A.removeViewContact())
+              dispatch(A.setCanEditFalse())
+              dispatch(A.setSelectedContactId(null))
               dispatch(A.turnNewContactFavoritedFalse())
               navigate('/')
             }}
@@ -73,19 +82,19 @@ const Navbar = ({ onDetails }: Props) => {
           <S.IconsContainer>
             <S.EditIcon
               onClick={() => {
-                dispatch(A.changeCanEdit())
+                dispatch(A.toggleCanEdit())
               }}
               src={canEdit ? saveIcon : editIcon}
               alt="Ícone de editar contato"
             />
             <S.OptionIcon
               onClick={() => {
-                if (viewContact) {
+                if (currentContact) {
                   dispatch(A.toggleFavorited())
                   dispatch(
                     A.editContact({
-                      ...viewContact,
-                      favorited: !viewContact.favorited
+                      ...currentContact,
+                      favorited: !currentContact.favorited
                     })
                   )
                 } else {

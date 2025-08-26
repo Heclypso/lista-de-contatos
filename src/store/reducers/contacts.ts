@@ -3,7 +3,7 @@ import ContactClass from '../../models/Contact'
 
 type ContactState = {
   contacts: ContactClass[]
-  viewContact: ContactClass | null
+  selectedContactId: number | null
   currentPage: string
   canEditContact: boolean
   newContact: ContactClass | null
@@ -14,7 +14,7 @@ type ContactState = {
 
 const initialState: ContactState = {
   contacts: [],
-  viewContact: null,
+  selectedContactId: 0,
   currentPage: 'contact',
   canEditContact: true,
   newContact: null,
@@ -46,11 +46,8 @@ const contactSlice = createSlice({
     turnNewContactFavoritedFalse: (state) => {
       state.newContactFavorited = false
     },
-    setViewContact: (state, action: PayloadAction<ContactClass>) => {
-      state.viewContact = action.payload
-    },
-    removeViewContact: (state) => {
-      state.viewContact = null
+    setSelectedContactId: (state, action: PayloadAction<number | null>) => {
+      state.selectedContactId = action.payload
     },
     changeOnPage: (state, action: PayloadAction<string>) => {
       state.currentPage = action.payload
@@ -72,12 +69,19 @@ const contactSlice = createSlice({
       state.contacts[contactIndex] = action.payload
     },
     toggleFavorited: (state) => {
-      if (!state.viewContact) return
+      const index = state.selectedContactId
 
-      state.viewContact.favorited = !state.viewContact.favorited
+      if (index === null) return
+
+      const currentContact = state.contacts[index]
+
+      currentContact.favorited = !currentContact
     },
-    changeCanEdit: (state) => {
+    toggleCanEdit: (state) => {
       state.canEditContact = !state.canEditContact
+    },
+    setCanEditFalse: (state) => {
+      state.canEditContact = false
     },
     setSearchValue: (state, action: PayloadAction<string>) => {
       state.searchValue = action.payload
@@ -98,12 +102,12 @@ const contactSlice = createSlice({
 
 export const {
   addContact,
-  setViewContact,
-  removeViewContact,
+  setSelectedContactId,
   changeOnPage,
   deleteContact,
   editContact,
-  changeCanEdit,
+  toggleCanEdit,
+  setCanEditFalse,
   toggleNewContactFavorited,
   turnNewContactFavoritedFalse,
   setSearchValue,
@@ -113,3 +117,6 @@ export const {
   setNewContact
 } = contactSlice.actions
 export default contactSlice.reducer
+export function removecurrentContact(): any {
+  throw new Error('Function not implemented.')
+}

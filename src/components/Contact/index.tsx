@@ -7,7 +7,10 @@ import * as S from './styles'
 import icon from '../../icons/call_icon.svg'
 import { LabelBig, Title } from '../../styles'
 
-import { setLastCall, setViewContact } from '../../store/reducers/contacts'
+import {
+  setLastCall,
+  setSelectedContactId
+} from '../../store/reducers/contacts'
 import ContactClass from '../../models/Contact'
 import { RootReducer } from '../../store'
 
@@ -74,17 +77,7 @@ const Contact = ({
         lastCall: getLastCallTime()
       })
     )
-    dispatch(
-      setViewContact({
-        id,
-        avatar,
-        name,
-        number,
-        email,
-        favorited,
-        lastCall
-      })
-    )
+    dispatch(setSelectedContactId(id))
     navigate('/call')
   }
 

@@ -4,7 +4,7 @@ import { useDispatch } from 'react-redux'
 import * as S from './styles'
 
 import icon from '../../icons/add_user.svg'
-import { changeCanEdit } from '../../store/reducers/contacts'
+import { toggleCanEdit } from '../../store/reducers/contacts'
 
 const CreateNewContact = () => {
   const navigate = useNavigate()
@@ -14,7 +14,7 @@ const CreateNewContact = () => {
     <S.CreateNewContactWrapper
       onClick={() => {
         navigate('/contact-details')
-        dispatch(changeCanEdit())
+        dispatch(toggleCanEdit())
       }}
     >
       <S.CreateNewContactButton>Criar novo contato</S.CreateNewContactButton>
