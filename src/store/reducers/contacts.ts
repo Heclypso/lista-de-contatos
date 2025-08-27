@@ -34,8 +34,12 @@ const contactSlice = createSlice({
         state.newContact = action.payload
       }
     },
-    setNewContact: (state, action: PayloadAction<ContactClass>) => {
-      const exists = state.contacts.some((c) => c.id === action.payload.id)
+    setNewContact: (state, action: PayloadAction<ContactClass | null>) => {
+      const exists = state.contacts.some((c) => {
+        if (action.payload != null) {
+          c.id === action.payload.id
+        }
+      })
       if (!exists) {
         state.newContact = action.payload
       }
@@ -80,6 +84,9 @@ const contactSlice = createSlice({
     toggleCanEdit: (state) => {
       state.canEditContact = !state.canEditContact
     },
+    setCanEditTrue: (state) => {
+      state.canEditContact = true
+    },
     setCanEditFalse: (state) => {
       state.canEditContact = false
     },
@@ -106,8 +113,9 @@ export const {
   changeOnPage,
   deleteContact,
   editContact,
-  toggleCanEdit,
+  setCanEditTrue,
   setCanEditFalse,
+  toggleCanEdit,
   toggleNewContactFavorited,
   turnNewContactFavoritedFalse,
   setSearchValue,

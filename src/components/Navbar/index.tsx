@@ -29,11 +29,9 @@ const Navbar = ({ onDetails }: Props) => {
   )
 
   const currentContact =
-    selectedContactId != null ? contacts[selectedContactId] : null
-
-  const deleteContactFunction = () => {
-    console.log('Delete contact function')
-  }
+    selectedContactId != null
+      ? contacts.find((c) => c.id === selectedContactId)
+      : null
 
   const canEdit = useSelector(
     (state: RootReducer) => state.contacts.canEditContact
@@ -53,8 +51,41 @@ const Navbar = ({ onDetails }: Props) => {
       ? favoritedIcon
       : favoriteIcon
 
-  if (currentContact) {
-    console.log('Está favoritado?', currentContact.favorited)
+  const resolvedAction = () => {
+    if (currentContact) {
+      dispatch(A.editContact(currentContact))
+    } else if (newContact) {
+      dispatch(A.addContact(newContact))
+    }
+  }
+
+  const handleExit = () => {
+    dispatch(A.setCanEditFalse())
+    dispatch(A.turnNewContactFavoritedFalse())
+    dispatch(A.setSelectedContactId(null))
+    navigate('/')
+  }
+
+  const deleteContact = () => {
+    if (currentContact) {
+      dispatch(A.deleteContact(currentContact.id))
+      handleExit()
+    } else {
+      return
+    }
+  }
+
+  const resolvedFavorite = () => {
+    dispatch(A.toggleNewContactFavorited())
+    if (currentContact) {
+      dispatch(A.toggleFavorited())
+      dispatch(
+        A.editContact({
+          ...currentContact,
+          favorited: !currentContact.favorited
+        })
+      )
+    }
   }
 
   return (
@@ -62,20 +93,7 @@ const Navbar = ({ onDetails }: Props) => {
       {onDetails ? (
         <>
           <S.OptionIcon
-            onClick={() => {
-              if (currentContact) {
-                dispatch(
-                  A.editContact({
-                    ...currentContact
-                  })
-                )
-              }
-              newContact ? dispatch(A.addContact(newContact)) : ''
-              dispatch(A.setCanEditFalse())
-              dispatch(A.setSelectedContactId(null))
-              dispatch(A.turnNewContactFavoritedFalse())
-              navigate('/')
-            }}
+            onClick={handleExit}
             src={returnIcon}
             alt="Ícone de navegar para a página anterior"
           />
@@ -83,31 +101,20 @@ const Navbar = ({ onDetails }: Props) => {
             <S.EditIcon
               onClick={() => {
                 dispatch(A.toggleCanEdit())
+                resolvedAction()
               }}
               src={canEdit ? saveIcon : editIcon}
               alt="Ícone de editar contato"
             />
             <S.OptionIcon
-              onClick={() => {
-                if (currentContact) {
-                  dispatch(A.toggleFavorited())
-                  dispatch(
-                    A.editContact({
-                      ...currentContact,
-                      favorited: !currentContact.favorited
-                    })
-                  )
-                } else {
-                  dispatch(A.toggleNewContactFavorited())
-                }
-              }}
+              onClick={resolvedFavorite}
               src={starIcon}
               alt="Ícone de favoritar contato"
             />
             <S.DeleteIcon
               onClick={() => {
                 navigate('/')
-                deleteContactFunction()
+                deleteContact()
               }}
               src={deleteIcon}
               alt="Ícone de deletar contato"

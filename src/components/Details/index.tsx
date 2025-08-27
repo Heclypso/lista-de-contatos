@@ -23,7 +23,9 @@ const Details = () => {
   )
 
   const currentContact =
-    selectedContactId != null ? contacts[selectedContactId] : null
+    selectedContactId != null
+      ? contacts.find((c) => c.id === selectedContactId)
+      : null
 
   const dispatch = useDispatch()
   const navigate = useNavigate()
@@ -83,15 +85,9 @@ const Details = () => {
     setCreatedContact({ ...createdContact, avatar: avatarUrl })
 
     if (currentContact) {
-      dispatch(A.editContact(currentContact))
-    }
-    if (avatarImage) {
-      dispatch(
-        A.setNewContact({
-          ...createdContact,
-          avatar: avatarImage
-        })
-      )
+      dispatch(A.editContact({ ...currentContact, avatar: avatarUrl }))
+    } else {
+      dispatch(A.setNewContact({ ...createdContact, avatar: avatarUrl }))
     }
   }
 
@@ -99,12 +95,12 @@ const Details = () => {
     setIsEditing(true)
     setCreatedContactName(value)
     setCreatedContact({ ...createdContact, name: value })
-    dispatch(
-      A.setNewContact({
-        ...createdContact,
-        name: value
-      })
-    )
+
+    if (currentContact) {
+      dispatch(A.editContact({ ...currentContact, name: value }))
+    } else {
+      dispatch(A.setNewContact({ ...createdContact, name: value }))
+    }
 
     const words = value.split(' ')
 
@@ -125,12 +121,12 @@ const Details = () => {
     setIsEditing(true)
     setCreatedContactNumber(value)
     setCreatedContact({ ...createdContact, number: value })
-    dispatch(
-      A.setNewContact({
-        ...createdContact,
-        number: value
-      })
-    )
+
+    if (currentContact) {
+      dispatch(A.editContact({ ...currentContact, number: value }))
+    } else {
+      dispatch(A.setNewContact({ ...createdContact, number: value }))
+    }
 
     const numbers = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']
 
@@ -149,12 +145,12 @@ const Details = () => {
     setIsEditing(true)
     setCreatedContactEmail(value)
     setCreatedContact({ ...createdContact, email: value })
-    dispatch(
-      A.setNewContact({
-        ...createdContact,
-        email: value
-      })
-    )
+
+    if (currentContact) {
+      dispatch(A.editContact({ ...currentContact, email: value }))
+    } else {
+      dispatch(A.setNewContact({ ...createdContact, email: value }))
+    }
 
     const domains = [
       '@gmail.com',
