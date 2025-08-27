@@ -3,7 +3,7 @@ import variables from '../../styles/variables'
 import { Link } from 'react-router-dom'
 
 type NavProps = {
-  $onDetails: boolean
+  $onDetails?: boolean
 }
 
 export const Nav = styled.div<NavProps>`

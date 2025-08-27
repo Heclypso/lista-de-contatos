@@ -39,17 +39,7 @@ const Navbar = ({ onDetails }: Props) => {
 
   const { newContact } = useSelector((state: RootReducer) => state.contacts)
 
-  const newContactFavorited = useSelector(
-    (state: RootReducer) => state.contacts.newContactFavorited
-  )
-
-  const starIcon = currentContact
-    ? currentContact.favorited
-      ? favoritedIcon
-      : favoriteIcon
-    : newContactFavorited
-      ? favoritedIcon
-      : favoriteIcon
+  const starIcon = currentContact?.favorited ? favoritedIcon : favoriteIcon
 
   const resolvedAction = () => {
     if (currentContact) {
@@ -61,7 +51,6 @@ const Navbar = ({ onDetails }: Props) => {
 
   const handleExit = () => {
     dispatch(A.setCanEditFalse())
-    dispatch(A.turnNewContactFavoritedFalse())
     dispatch(A.setSelectedContactId(null))
     navigate('/')
   }
@@ -75,8 +64,7 @@ const Navbar = ({ onDetails }: Props) => {
     }
   }
 
-  const resolvedFavorite = () => {
-    dispatch(A.toggleNewContactFavorited())
+  const favoriteHandle = () => {
     if (currentContact) {
       dispatch(A.toggleFavorited())
       dispatch(
@@ -107,7 +95,12 @@ const Navbar = ({ onDetails }: Props) => {
               alt="Ícone de editar contato"
             />
             <S.OptionIcon
-              onClick={resolvedFavorite}
+              onClick={() => {
+                favoriteHandle()
+                if (!currentContact) {
+                  alert('Salve o contato primeiro antes de favoritar')
+                }
+              }}
               src={starIcon}
               alt="Ícone de favoritar contato"
             />

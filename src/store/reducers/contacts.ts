@@ -7,7 +7,6 @@ type ContactState = {
   currentPage: string
   canEditContact: boolean
   newContact: ContactClass | null
-  newContactFavorited: boolean
   searchValue: string
   formError: string
 }
@@ -19,8 +18,7 @@ const initialState: ContactState = {
   canEditContact: true,
   newContact: null,
   searchValue: '',
-  formError: '',
-  newContactFavorited: false
+  formError: ''
 }
 
 const contactSlice = createSlice({
@@ -42,13 +40,9 @@ const contactSlice = createSlice({
       })
       if (!exists) {
         state.newContact = action.payload
+        if (action.payload?.id !== undefined)
+          state.selectedContactId = action.payload.id
       }
-    },
-    toggleNewContactFavorited: (state) => {
-      state.newContactFavorited = !state.newContactFavorited
-    },
-    turnNewContactFavoritedFalse: (state) => {
-      state.newContactFavorited = false
     },
     setSelectedContactId: (state, action: PayloadAction<number | null>) => {
       state.selectedContactId = action.payload
@@ -116,8 +110,6 @@ export const {
   setCanEditTrue,
   setCanEditFalse,
   toggleCanEdit,
-  toggleNewContactFavorited,
-  turnNewContactFavoritedFalse,
   setSearchValue,
   setLastCall,
   setFormError,
