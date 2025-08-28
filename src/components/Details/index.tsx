@@ -149,10 +149,10 @@ const Details = () => {
 
     if (validValue || value.length < 11) {
       dispatch(A.setFormError('Numero de telefone invalido'))
-      setValidName(false)
+      setValidNumber(false)
     } else if (value.length === 9) {
       dispatch(A.setFormError('Digite o DDD'))
-      setValidName(false)
+      setValidNumber(false)
     } else {
       dispatch(A.setFormError(''))
       setValidNumber(true)
@@ -220,7 +220,7 @@ const Details = () => {
       setValidEmail(true)
     } else {
       dispatch(A.setFormError('Valor inválido'))
-      setValidName(false)
+      setValidEmail(false)
     }
   }
 
