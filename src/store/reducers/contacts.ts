@@ -9,6 +9,7 @@ type ContactState = {
   newContact: ContactClass | null
   searchValue: string
   formError: string
+  lockSubmit: boolean
 }
 
 const initialState: ContactState = {
@@ -18,7 +19,8 @@ const initialState: ContactState = {
   canEditContact: true,
   newContact: null,
   searchValue: '',
-  formError: ''
+  formError: '',
+  lockSubmit: true
 }
 
 const contactSlice = createSlice({
@@ -97,6 +99,9 @@ const contactSlice = createSlice({
     },
     setFormError: (state, action: PayloadAction<string>) => {
       state.formError = action.payload
+    },
+    setLockSubmit: (state, action: PayloadAction<boolean>) => {
+      state.lockSubmit = action.payload
     }
   }
 })
@@ -114,7 +119,8 @@ export const {
   setLastCall,
   setFormError,
   toggleFavorited,
-  setNewContact
+  setNewContact,
+  setLockSubmit
 } = contactSlice.actions
 export default contactSlice.reducer
 export function removecurrentContact(): any {

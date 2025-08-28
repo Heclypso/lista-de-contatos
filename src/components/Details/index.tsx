@@ -71,6 +71,16 @@ const Details = () => {
     }
   }, [currentContact, isEditing])
 
+  const [validName, setValidName] = useState(false)
+  const [validNumber, setValidNumber] = useState(false)
+  const [validEmail, setValidEmail] = useState(false)
+
+  useEffect(() => {
+    if (validName === true && validNumber === true && validEmail === true) {
+      dispatch(A.setLockSubmit(false))
+    }
+  }, [dispatch, validEmail, validName, validNumber])
+
   const resolvedAvatarImage = avatarImage ? avatarImage : currentContact?.avatar
 
   const validateAvatar = (file: File | undefined) => {
@@ -114,6 +124,7 @@ const Details = () => {
       dispatch(A.setFormError('Sobrenome inválido'))
     } else {
       dispatch(A.setFormError(''))
+      setValidName(true)
     }
   }
 
@@ -138,6 +149,7 @@ const Details = () => {
       dispatch(A.setFormError('Digite o DDD'))
     } else {
       dispatch(A.setFormError(''))
+      setValidNumber(true)
     }
   }
 
@@ -199,6 +211,7 @@ const Details = () => {
       domains.some((domain) => value.includes(domain))
     ) {
       dispatch(A.setFormError(''))
+      setValidEmail(true)
     } else {
       dispatch(A.setFormError('Valor inválido'))
     }

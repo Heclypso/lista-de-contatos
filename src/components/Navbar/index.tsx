@@ -76,6 +76,8 @@ const Navbar = ({ onDetails }: Props) => {
     }
   }
 
+  const { lockSubmit } = useSelector((state: RootReducer) => state.contacts)
+
   return (
     <S.Nav $onDetails={onDetails}>
       {onDetails ? (
@@ -88,8 +90,12 @@ const Navbar = ({ onDetails }: Props) => {
           <S.IconsContainer>
             <S.EditIcon
               onClick={() => {
-                dispatch(A.toggleCanEdit())
-                resolvedAction()
+                if (lockSubmit === false) {
+                  dispatch(A.toggleCanEdit())
+                  resolvedAction()
+                } else {
+                  alert('Preencha os campos corretamente')
+                }
               }}
               src={canEdit ? saveIcon : editIcon}
               alt="Ícone de editar contato"
