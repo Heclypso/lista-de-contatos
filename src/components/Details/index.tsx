@@ -116,12 +116,16 @@ const Details = () => {
 
     if ('0123456789'.includes(value[0])) {
       dispatch(A.setFormError('O nome não pode começar com um número'))
+      setValidName(false)
     } else if (value.length < 3) {
       dispatch(A.setFormError('Nome menor que 3 caracteres'))
+      setValidName(false)
     } else if (words.length < 2) {
       dispatch(A.setFormError('Informe o nome completo'))
+      setValidName(false)
     } else if (words.includes('')) {
       dispatch(A.setFormError('Sobrenome inválido'))
+      setValidName(false)
     } else {
       dispatch(A.setFormError(''))
       setValidName(true)
@@ -145,8 +149,10 @@ const Details = () => {
 
     if (validValue || value.length < 11) {
       dispatch(A.setFormError('Numero de telefone invalido'))
+      setValidName(false)
     } else if (value.length === 9) {
       dispatch(A.setFormError('Digite o DDD'))
+      setValidName(false)
     } else {
       dispatch(A.setFormError(''))
       setValidNumber(true)
@@ -214,6 +220,7 @@ const Details = () => {
       setValidEmail(true)
     } else {
       dispatch(A.setFormError('Valor inválido'))
+      setValidName(false)
     }
   }
 
