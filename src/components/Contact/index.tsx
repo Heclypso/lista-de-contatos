@@ -2,17 +2,19 @@ import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 
-import * as S from './styles'
-
 import icon from '../../icons/call_icon.svg'
-import { LabelBig, Title } from '../../styles'
 
 import {
   setLastCall,
   setSelectedContactId
 } from '../../store/reducers/contacts'
+
 import ContactClass from '../../models/Contact'
+
 import { RootReducer } from '../../store'
+
+import * as S from './styles'
+import { LabelBig, Title } from '../../styles'
 
 type ContactType = ContactClass
 

@@ -1,14 +1,15 @@
 import { useNavigate } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 
-import * as S from './styles'
-
 import icon from '../../icons/add_user.svg'
+
 import {
   setCanEditTrue,
   setSelectedContactId
 } from '../../store/reducers/contacts'
 import { RootReducer } from '../../store'
+
+import * as S from './styles'
 
 const CreateNewContact = () => {
   const navigate = useNavigate()

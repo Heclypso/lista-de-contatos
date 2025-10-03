@@ -1,16 +1,18 @@
 import { useDispatch } from 'react-redux'
 
-import { Search, SearchIcon, SearchWrapper } from './styles'
 import searchIcon from '../../icons/search_icon.svg'
+
 import { setSearchValue } from '../../store/reducers/contacts'
+
+import * as S from './styles'
 
 const SearchBar = () => {
   const dispatch = useDispatch()
 
   return (
-    <SearchWrapper>
-      <SearchIcon src={searchIcon} alt="ícone da barra de pesquisa" />
-      <Search
+    <S.SearchWrapper>
+      <S.SearchIcon src={searchIcon} alt="ícone da barra de pesquisa" />
+      <S.Search
         onChange={(e) => {
           const eValue = e.target.value.toLocaleLowerCase()
           dispatch(setSearchValue(eValue))
@@ -19,7 +21,7 @@ const SearchBar = () => {
         id="search-bar"
         placeholder="Pesquisar contatos"
       />
-    </SearchWrapper>
+    </S.SearchWrapper>
   )
 }
 

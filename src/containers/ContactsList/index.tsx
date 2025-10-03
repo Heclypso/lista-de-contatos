@@ -8,6 +8,7 @@ import WordCategory from '../../components/WordCategory'
 
 import { RootReducer } from '../../store'
 import ContactClass from '../../models/Contact'
+
 import { Title } from '../../styles'
 import { TextContainer } from './styles'
 

@@ -1,8 +1,6 @@
 import { useNavigate } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 
-import * as S from './styles'
-
 import favoriteIcon from '../../icons/favorite_icon.svg'
 import favoritedIcon from '../../icons/favorited_icon.svg'
 import recentIcon from '../../icons/clock_icon.svg'
@@ -15,6 +13,8 @@ import saveIcon from '../../icons/save_icon.svg'
 
 import * as A from '../../store/reducers/contacts'
 import { RootReducer } from '../../store'
+
+import * as S from './styles'
 
 type Props = {
   onDetails: boolean

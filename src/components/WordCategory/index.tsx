@@ -1,8 +1,4 @@
-import {
-  WordCategoryLine,
-  WordCategoryWord,
-  WordCategoryWrapper
-} from './styles'
+import * as S from './styles'
 
 type Props = {
   wordCategory: string
@@ -10,10 +6,10 @@ type Props = {
 
 const WordCategory = ({ wordCategory }: Props) => {
   return (
-    <WordCategoryWrapper>
-      <WordCategoryWord>{wordCategory}</WordCategoryWord>
-      <WordCategoryLine />
-    </WordCategoryWrapper>
+    <S.WordCategoryWrapper>
+      <S.WordCategoryWord>{wordCategory}</S.WordCategoryWord>
+      <S.WordCategoryLine />
+    </S.WordCategoryWrapper>
   )
 }
 

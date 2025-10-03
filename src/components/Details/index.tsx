@@ -2,20 +2,19 @@ import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 
-import * as S from './styles'
-
 import phoneIcon from '../../icons/phone_icon.svg'
 import messageIcon from '../../icons/message_icon.svg'
 import videoIcon from '../../icons/video_icon.svg'
 import mailIcon from '../../icons/mail_icon.svg'
 import addIcon from '../../icons/plus_icon.svg'
 
-import { Label, LabelBlack, Title } from '../../styles'
-
+import * as A from '../../store/reducers/contacts'
 import { RootReducer } from '../../store'
 
-import * as A from '../../store/reducers/contacts'
 import Contact from '../../models/Contact'
+
+import * as S from './styles'
+import { Label, LabelBlack, Title } from '../../styles'
 
 const Details = () => {
   const { selectedContactId, contacts } = useSelector(
